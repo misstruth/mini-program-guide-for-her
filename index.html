@@ -901,13 +901,13 @@
     .result-stamp:nth-child(2) { background: rgba(158, 240, 217, 0.9); transform: rotate(1.6deg); }
     .result-stamp:nth-child(3) { background: rgba(255, 213, 188, 0.92); transform: rotate(-1deg); }
 
-    .visual-card {
-      margin-top: 18px;
+    .hero-visual {
+      margin-top: 20px;
       padding: 18px;
       border-radius: 28px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,244,234,0.94));
-      border: 1px solid rgba(24,32,51,0.08);
-      box-shadow: 0 16px 28px rgba(29,43,83,0.08);
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
     }
 
     .visual-head {
@@ -921,7 +921,7 @@
       font-size: 12px;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: rgba(24,32,51,0.5);
+      color: rgba(255,248,241,0.64);
     }
 
     .visual-title {
@@ -929,14 +929,14 @@
       font-size: 28px;
       line-height: 1.1;
       font-weight: 900;
-      color: var(--ink);
+      color: #fffdf8;
     }
 
     .visual-badge {
       flex-shrink: 0;
       padding: 10px 14px;
       border-radius: 999px;
-      background: var(--navy);
+      background: rgba(255,255,255,0.14);
       color: #fffdf8;
       font-size: 12px;
       letter-spacing: 0.06em;
@@ -948,8 +948,8 @@
       aspect-ratio: 1 / 1;
       object-fit: cover;
       border-radius: 24px;
-      background: rgba(24,32,51,0.08);
-      border: 1px solid rgba(24,32,51,0.08);
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
     }
 
     .score-row,
@@ -1189,6 +1189,16 @@
           <div id="resultSubtitle" class="result-subtitle"></div>
           <div id="resultVerdict" class="result-verdict"></div>
           <div id="resultTags" class="tag-row"></div>
+          <div id="resultVisualCard" class="hero-visual hidden">
+            <div class="visual-head">
+              <div>
+                <div class="visual-kicker">persona visual</div>
+                <div id="visualTitle" class="visual-title"></div>
+              </div>
+              <div id="visualBadge" class="visual-badge"></div>
+            </div>
+            <img id="visualImage" class="visual-image" alt="角色形象">
+          </div>
           <div id="resultStampRow" class="result-stamp-row"></div>
 
           <div class="share-card">
@@ -1199,17 +1209,6 @@
       </aside>
 
       <div>
-        <div id="resultVisualCard" class="visual-card hidden">
-          <div class="visual-head">
-            <div>
-              <div class="visual-kicker">persona visual</div>
-              <div id="visualTitle" class="visual-title"></div>
-            </div>
-            <div id="visualBadge" class="visual-badge"></div>
-          </div>
-          <img id="visualImage" class="visual-image" alt="角色形象">
-        </div>
-
         <div id="scoreRow" class="score-row"></div>
         <div id="topList" class="top-row"></div>
 
@@ -1606,7 +1605,7 @@
 
       visualTitleEl.textContent = `#${avatar.index} ${roleName}`;
       visualBadgeEl.textContent = roleId;
-      visualImageEl.src = `/${avatar.image}`;
+      visualImageEl.src = `/miniprogram/${avatar.image}`;
       visualImageEl.alt = `${roleName} 角色形象`;
       resultVisualCardEl.classList.remove('hidden');
     }

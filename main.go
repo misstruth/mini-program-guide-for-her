@@ -31,7 +31,16 @@ func main() {
 
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "8080"
+		port = "80"
+	}
+
+	if port != "80" {
+		go func() {
+			log.Printf("server also listening on :80 for platform probes")
+			if err := http.ListenAndServe(":80", nil); err != nil {
+				log.Printf("listen on :80 failed: %v", err)
+			}
+		}()
 	}
 
 	log.Printf("server listening on :%s", port)
