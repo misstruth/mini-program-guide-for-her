@@ -5,6 +5,8 @@ import (
 	"os"
 	"time"
 
+	"wxcloudrun-golang/db/model"
+
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
@@ -12,9 +14,13 @@ import (
 
 var dbInstance *gorm.DB
 
+// IsConfigured 是否配置了数据库连接
+func IsConfigured() bool {
+	return os.Getenv("MYSQL_ADDRESS") != ""
+}
+
 // Init 初始化数据库
 func Init() error {
-
 	source := "%s:%s@tcp(%s)/%s?readTimeout=1500ms&writeTimeout=1500ms&charset=utf8&loc=Local&&parseTime=true"
 	user := os.Getenv("MYSQL_USERNAME")
 	pwd := os.Getenv("MYSQL_PASSWORD")
@@ -49,6 +55,16 @@ func Init() error {
 	sqlDB.SetConnMaxLifetime(time.Hour)
 
 	dbInstance = db
+
+	if err := db.AutoMigrate(
+		&model.CounterModel{},
+		&model.StudyTaskModel{},
+		&model.StudyRecordModel{},
+		&model.StudyNoteModel{},
+	); err != nil {
+		fmt.Println("DB AutoMigrate error,err=", err.Error())
+		return err
+	}
 
 	fmt.Println("finish init mysql with ", source)
 	return nil

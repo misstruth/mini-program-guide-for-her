@@ -1,517 +1,1299 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>小程序开发流程卡片</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>工位人格研究所</title>
   <style>
     :root {
-      --bg: #f5efe6;
-      --panel: rgba(255, 252, 247, 0.92);
-      --panel-strong: #fffdf9;
-      --ink: #2b241f;
-      --muted: #786a5b;
-      --line: rgba(74, 54, 33, 0.12);
-      --brand: #e9805d;
-      --brand-deep: #c95a34;
-      --accent: #ffd9c9;
-      --shadow: 0 24px 60px rgba(85, 49, 21, 0.12);
-      --radius-xl: 28px;
-      --radius-lg: 22px;
-      --radius-md: 18px;
-      --phone-width: min(100%, 430px);
+      --bg: #fff8ef;
+      --bg-2: #ffe8d7;
+      --ink: #182033;
+      --muted: #5f667d;
+      --navy: #1d2b53;
+      --blue: #4e7bff;
+      --mint: #9ef0d9;
+      --peach: #ffb883;
+      --tomato: #ff6f4d;
+      --yellow: #ffe47a;
+      --white: #fffdf8;
+      --line: rgba(24, 32, 51, 0.08);
+      --shadow: 0 20px 44px rgba(29, 43, 83, 0.12);
+      --shadow-soft: 0 12px 26px rgba(29, 43, 83, 0.08);
+      --sans: "Avenir Next", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
 
     body {
       margin: 0;
       min-height: 100vh;
-      font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      font-family: var(--sans);
       color: var(--ink);
       background:
-        radial-gradient(circle at top left, rgba(255, 214, 194, 0.86), transparent 28%),
-        radial-gradient(circle at 85% 15%, rgba(255, 245, 205, 0.92), transparent 24%),
-        linear-gradient(180deg, #fbf6ef 0%, #f6ede2 42%, #efe4d5 100%);
+        radial-gradient(circle at 8% 10%, rgba(158, 240, 217, 0.45), transparent 20%),
+        radial-gradient(circle at 90% 14%, rgba(255, 184, 131, 0.35), transparent 22%),
+        radial-gradient(circle at 82% 78%, rgba(78, 123, 255, 0.14), transparent 18%),
+        linear-gradient(180deg, var(--bg) 0%, #fff3e6 52%, var(--bg-2) 100%);
+      overflow-x: hidden;
     }
 
-    .page {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      padding: 28px 14px 40px;
-    }
-
-    .phone-shell {
-      width: var(--phone-width);
-      border-radius: 34px;
-      padding: 14px;
-      background: rgba(61, 45, 28, 0.08);
-      box-shadow: 0 18px 50px rgba(70, 44, 19, 0.18);
-      backdrop-filter: blur(10px);
-    }
-
-    .phone-screen {
-      min-height: calc(100vh - 80px);
-      border-radius: 28px;
-      overflow: hidden;
-      background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.58), rgba(255, 255, 255, 0.16)),
-        linear-gradient(180deg, #fffaf3 0%, #fff5ea 55%, #fbf0e4 100%);
-      position: relative;
-    }
-
-    .phone-screen::before,
-    .phone-screen::after {
+    body::before {
       content: "";
-      position: absolute;
-      border-radius: 999px;
+      position: fixed;
+      inset: 0;
       pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.12) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.12) 1px, transparent 1px);
+      background-size: 28px 28px;
+      opacity: 0.45;
+      mix-blend-mode: soft-light;
     }
 
-    .phone-screen::before {
+    .float-blob {
+      position: fixed;
+      z-index: 0;
+      filter: blur(6px);
+      opacity: 0.7;
+      pointer-events: none;
+      animation: drift 14s ease-in-out infinite;
+    }
+
+    .blob-a {
+      width: 220px;
+      height: 220px;
+      top: 90px;
+      left: -40px;
+      border-radius: 46% 54% 55% 45% / 48% 41% 59% 52%;
+      background: rgba(158, 240, 217, 0.42);
+    }
+
+    .blob-b {
       width: 180px;
       height: 180px;
-      top: -70px;
-      right: -60px;
-      background: rgba(248, 163, 130, 0.22);
+      top: 420px;
+      right: 32px;
+      border-radius: 58% 42% 37% 63% / 46% 59% 41% 54%;
+      background: rgba(255, 184, 131, 0.34);
+      animation-delay: -6s;
     }
 
-    .phone-screen::after {
-      width: 160px;
-      height: 160px;
-      bottom: 90px;
-      left: -50px;
-      background: rgba(255, 226, 165, 0.22);
+    .blob-c {
+      width: 140px;
+      height: 140px;
+      bottom: 80px;
+      left: 18%;
+      border-radius: 59% 41% 52% 48% / 34% 56% 44% 66%;
+      background: rgba(78, 123, 255, 0.2);
+      animation-delay: -3s;
     }
 
-    .status-bar {
+    @keyframes drift {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-16px) rotate(6deg); }
+    }
+
+    .shell {
+      position: relative;
+      z-index: 1;
+      width: min(1240px, calc(100vw - 28px));
+      margin: 0 auto;
+      padding: 18px 0 44px;
+    }
+
+    .topline {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 14px 18px 10px;
-      font-size: 13px;
-      font-weight: 600;
-      position: relative;
-      z-index: 1;
+      gap: 16px;
+      margin-bottom: 18px;
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(24, 32, 51, 0.62);
     }
 
-    .status-right {
-      display: flex;
-      gap: 8px;
-      color: var(--muted);
-    }
-
-    .content {
-      position: relative;
-      z-index: 1;
-      padding: 8px 16px 28px;
-    }
-
-    .hero-card,
-    .section-card,
-    .footer-card,
-    .loading-card {
-      border: 1px solid var(--line);
-      background: var(--panel);
-      box-shadow: var(--shadow);
+    .brand-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.7);
+      border: 1px solid rgba(24,32,51,0.08);
+      box-shadow: var(--shadow-soft);
       backdrop-filter: blur(12px);
     }
 
-    .hero-card {
-      border-radius: var(--radius-xl);
-      padding: 22px 20px 20px;
-      position: relative;
+    .brand-dots {
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      background: var(--tomato);
+      box-shadow: 18px 0 0 var(--yellow), 36px 0 0 var(--mint);
+      margin-right: 36px;
+    }
+
+    .ticker {
+      display: flex;
+      gap: 14px;
       overflow: hidden;
+      margin-bottom: 18px;
+      padding: 0 2px;
     }
 
-    .hero-card::after {
-      content: "";
-      position: absolute;
-      right: -18px;
-      top: 24px;
-      width: 94px;
-      height: 94px;
-      border-radius: 24px;
-      background: linear-gradient(180deg, rgba(233, 128, 93, 0.18), rgba(255, 216, 184, 0.54));
-      transform: rotate(12deg);
+    .ticker-track {
+      display: flex;
+      gap: 14px;
+      min-width: max-content;
+      animation: scrollx 22s linear infinite;
     }
 
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 12px;
+    .ticker-chip {
+      padding: 10px 14px;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.66);
-      color: var(--brand-deep);
+      background: rgba(255,255,255,0.74);
+      border: 1px solid rgba(24,32,51,0.08);
+      box-shadow: var(--shadow-soft);
+      color: rgba(24,32,51,0.68);
       font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-    }
-
-    h1,
-    h2,
-    h3,
-    p {
-      margin: 0;
-    }
-
-    .hero-title {
-      margin-top: 16px;
-      width: 82%;
-      font-size: 29px;
-      line-height: 1.18;
-      letter-spacing: -0.03em;
-    }
-
-    .hero-subtitle {
-      margin-top: 12px;
-      width: 80%;
-      font-size: 14px;
-      line-height: 1.7;
-      color: var(--muted);
-    }
-
-    .chip-row {
-      margin-top: 16px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .chip {
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: var(--accent);
-      color: #8e3f21;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .section-card {
-      margin-top: 16px;
-      border-radius: var(--radius-lg);
-      padding: 18px;
-    }
-
-    .section-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 12px;
-      margin-bottom: 14px;
-    }
-
-    .section-title {
-      font-size: 18px;
-      font-weight: 800;
-    }
-
-    .section-note {
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .timeline {
-      display: grid;
-      gap: 12px;
-    }
-
-    .timeline-item {
-      padding: 16px;
-      border-radius: var(--radius-md);
-      background: var(--panel-strong);
-      border: 1px solid rgba(74, 54, 33, 0.08);
-    }
-
-    .timeline-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .phase-id {
-      width: 42px;
-      height: 42px;
-      border-radius: 14px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(180deg, #ffded1, #ffcdb8);
-      color: #994527;
-      font-weight: 800;
-    }
-
-    .phase-duration {
-      font-size: 12px;
-      color: var(--muted);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
       white-space: nowrap;
     }
 
-    .phase-title {
-      margin-top: 12px;
-      font-size: 17px;
-      font-weight: 800;
+    @keyframes scrollx {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
     }
 
-    .phase-description {
-      margin-top: 8px;
-      font-size: 14px;
-      line-height: 1.75;
-      color: var(--muted);
-    }
-
-    .task-list,
-    .check-items,
-    .faq-list {
+    .landing-grid,
+    .quiz-grid,
+    .result-grid {
       display: grid;
+      gap: 18px;
+    }
+
+    .landing-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .panel {
+      position: relative;
+      border-radius: 34px;
+      overflow: hidden;
+      border: 1px solid rgba(24,32,51,0.08);
+      box-shadow: var(--shadow);
+      background: rgba(255, 253, 248, 0.76);
+      backdrop-filter: blur(14px);
+    }
+
+    .hero-panel {
+      min-height: 760px;
+      padding: 30px;
+      background:
+        radial-gradient(circle at 88% 16%, rgba(255, 228, 122, 0.36), transparent 20%),
+        radial-gradient(circle at 12% 88%, rgba(158, 240, 217, 0.28), transparent 20%),
+        linear-gradient(155deg, #1d2b53 0%, #27386a 42%, #2e3e74 100%);
+      color: #fffdf8;
+    }
+
+    .hero-sticker {
+      display: inline-flex;
+      align-items: center;
       gap: 10px;
-    }
-
-    .task,
-    .check-item,
-    .tip-card,
-    .faq-item {
+      padding: 10px 14px;
       border-radius: 16px;
-      background: rgba(255, 255, 255, 0.68);
-      border: 1px solid rgba(74, 54, 33, 0.08);
+      background: rgba(255,255,255,0.14);
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255,249,242,0.86);
+      transform: rotate(-2deg);
     }
 
-    .task {
-      padding: 12px 14px;
+    .hero-sticker::before {
+      content: "";
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      background: var(--yellow);
+    }
+
+    .hero-title {
+      margin: 18px 0 0;
+      font-size: clamp(56px, 8vw, 110px);
+      line-height: 0.9;
+      letter-spacing: -0.06em;
+      font-weight: 800;
+      max-width: 700px;
+    }
+
+    .hero-title span {
+      display: block;
+    }
+
+    .hero-copy {
+      margin-top: 24px;
+      max-width: 590px;
+      font-size: 22px;
+      line-height: 1.82;
+      color: rgba(255,249,242,0.92);
+    }
+
+    .hero-subcopy {
+      margin-top: 18px;
+      max-width: 520px;
+      font-size: 15px;
+      line-height: 1.88;
+      color: rgba(255,244,234,0.74);
+    }
+
+    .stat-row,
+    .action-row,
+    .tag-row,
+    .score-row,
+    .top-row,
+    .stickers {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .stat-row {
+      margin-top: 28px;
+    }
+
+    .stat-pill,
+    .result-tag,
+    .sticker {
+      padding: 10px 14px;
+      border-radius: 999px;
       font-size: 13px;
-      line-height: 1.6;
+      line-height: 1;
     }
 
-    .check-grid,
-    .tip-grid {
+    .stat-pill {
+      color: #1a2340;
+      font-weight: 800;
+      background: var(--white);
+      box-shadow: 0 10px 22px rgba(15, 24, 46, 0.14);
+    }
+
+    .stat-pill:nth-child(1) { background: var(--yellow); transform: rotate(-3deg); }
+    .stat-pill:nth-child(2) { background: var(--mint); transform: rotate(2deg); }
+    .stat-pill:nth-child(3) { background: #ffd0bd; transform: rotate(-1deg); }
+
+    .hero-quote {
+      position: absolute;
+      right: 26px;
+      top: 138px;
+      width: 220px;
+      padding: 18px;
+      border-radius: 24px;
+      background: rgba(255,255,255,0.88);
+      color: var(--ink);
+      box-shadow: 0 14px 30px rgba(18, 26, 46, 0.16);
+      transform: rotate(6deg);
+    }
+
+    .hero-quote::after {
+      content: "";
+      position: absolute;
+      left: 20px;
+      bottom: -14px;
+      width: 26px;
+      height: 26px;
+      background: inherit;
+      transform: rotate(45deg);
+      border-radius: 4px;
+    }
+
+    .hero-quote strong {
+      display: block;
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--tomato);
+    }
+
+    .hero-quote span {
+      display: block;
+      margin-top: 10px;
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--ink);
+    }
+
+    .hero-doodles {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .doodle {
+      position: absolute;
+      border-radius: 999px;
+      border: 2px dashed rgba(255,255,255,0.12);
+    }
+
+    .doodle-a {
+      width: 160px;
+      height: 160px;
+      right: 48px;
+      top: 66px;
+    }
+
+    .doodle-b {
+      width: 120px;
+      height: 120px;
+      right: 160px;
+      bottom: 96px;
+      transform: rotate(18deg);
+    }
+
+    .hero-cards {
+      position: absolute;
+      right: 26px;
+      bottom: 24px;
+      width: 250px;
       display: grid;
       gap: 12px;
     }
 
-    .check-card {
+    .mini-float {
       padding: 16px;
-      border-radius: var(--radius-md);
-      background: var(--panel-strong);
-      border: 1px solid rgba(74, 54, 33, 0.08);
-    }
-
-    .check-title {
-      font-size: 15px;
-      font-weight: 800;
-      margin-bottom: 12px;
-    }
-
-    .check-item {
-      padding: 11px 13px;
-      font-size: 13px;
-      line-height: 1.55;
-    }
-
-    .tip-card {
-      padding: 16px;
-    }
-
-    .tip-title {
-      font-size: 15px;
-      font-weight: 800;
-    }
-
-    .tip-content {
-      margin-top: 8px;
-      font-size: 13px;
-      line-height: 1.7;
-      color: var(--muted);
-    }
-
-    .faq-item {
-      padding: 16px;
-    }
-
-    .faq-question {
-      font-size: 15px;
-      font-weight: 800;
-    }
-
-    .faq-answer {
-      margin-top: 8px;
-      font-size: 13px;
-      line-height: 1.7;
-      color: var(--muted);
-    }
-
-    .footer-card {
-      margin-top: 16px;
       border-radius: 24px;
-      padding: 20px;
-      background:
-        linear-gradient(135deg, rgba(255, 233, 219, 0.95), rgba(255, 249, 241, 0.92));
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.08);
     }
 
-    .footer-signature {
-      font-size: 13px;
-      color: var(--brand-deep);
-      font-weight: 700;
+    .mini-float:nth-child(1) { transform: rotate(-4deg); }
+    .mini-float:nth-child(2) { transform: rotate(3deg); }
+
+    .mini-float strong {
+      display: block;
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,245,236,0.72);
     }
 
-    .footer-message {
+    .mini-float span {
+      display: block;
       margin-top: 10px;
       font-size: 15px;
-      line-height: 1.8;
+      line-height: 1.65;
+      color: #fffaf4;
     }
 
-    .loading-card {
-      border-radius: 24px;
-      padding: 22px 18px;
-      text-align: center;
-      font-size: 14px;
+    .side-stack {
+      display: none;
+    }
+
+    .side-card,
+    .story-card,
+    .rail-card,
+    .question-panel,
+    .result-hero,
+    .score-card,
+    .list-card {
+      padding: 24px;
+    }
+
+    .side-card {
+      background: rgba(255,255,255,0.8);
+      transform: rotate(0.8deg);
+    }
+
+    .section-title,
+    .list-title,
+    .question-title {
+      margin: 0;
+      color: var(--ink);
+    }
+
+    .section-title,
+    .list-title {
+      font-size: 28px;
+      line-height: 1.18;
+      font-weight: 800;
+    }
+
+    .section-copy,
+    .meta-copy,
+    .option-text,
+    .top-copy,
+    .roast {
+      margin-top: 10px;
       color: var(--muted);
+      font-size: 15px;
+      line-height: 1.82;
     }
 
-    @media (min-width: 768px) {
-      .phone-screen {
-        min-height: auto;
+    .role-cloud {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .cloud-card {
+      min-height: 90px;
+      padding: 16px;
+      border-radius: 22px;
+      background: #fffdf8;
+      border: 1px solid rgba(24,32,51,0.08);
+      box-shadow: 0 8px 18px rgba(29,43,83,0.05);
+      display: flex;
+      align-items: end;
+      font-size: 15px;
+      line-height: 1.55;
+      color: var(--ink);
+    }
+
+    .cloud-card:nth-child(1) { transform: rotate(-2deg); }
+    .cloud-card:nth-child(2) { transform: rotate(1.6deg); }
+    .cloud-card:nth-child(3) { transform: rotate(1deg); }
+    .cloud-card:nth-child(4) { transform: rotate(-1deg); }
+
+    .story-card {
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.86), rgba(255,246,237,0.9));
+      transform: rotate(-0.7deg);
+    }
+
+    .story-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .story-item {
+      min-height: 110px;
+      padding: 16px;
+      border-radius: 22px;
+      background: rgba(24,32,51,0.04);
+    }
+
+    .story-item:nth-child(1) { background: rgba(255, 228, 122, 0.28); }
+    .story-item:nth-child(2) { background: rgba(158, 240, 217, 0.26); }
+    .story-item:nth-child(3) { background: rgba(255, 184, 131, 0.25); }
+    .story-item:nth-child(4) { background: rgba(78, 123, 255, 0.12); }
+
+    .story-item strong {
+      display: block;
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--tomato);
+    }
+
+    .story-item span {
+      display: block;
+      margin-top: 10px;
+      font-size: 15px;
+      line-height: 1.72;
+      color: var(--ink);
+    }
+
+    .button {
+      appearance: none;
+      border: 0;
+      cursor: pointer;
+      min-height: 54px;
+      padding: 0 22px;
+      border-radius: 999px;
+      font-family: var(--sans);
+      font-size: 16px;
+      font-weight: 800;
+      transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
+    }
+
+    .button:hover { transform: translateY(-1px) scale(1.01); }
+
+    .button.primary {
+      color: #fff9f3;
+      background: linear-gradient(135deg, var(--tomato), #ff8c61);
+      box-shadow: 0 14px 28px rgba(255, 111, 77, 0.24);
+    }
+
+    .button.secondary {
+      color: var(--ink);
+      background: rgba(255,255,255,0.82);
+      border: 1px solid rgba(24,32,51,0.08);
+    }
+
+    .hidden { display: none !important; }
+
+    .quiz-grid,
+    .result-grid {
+      grid-template-columns: minmax(270px, 0.62fr) minmax(0, 1.38fr);
+      align-items: start;
+    }
+
+    .rail {
+      position: sticky;
+      top: 18px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .rail-card {
+      background: rgba(255,255,255,0.82);
+    }
+
+    .rail-card:first-child { transform: rotate(-1.2deg); }
+    .rail-card:last-child { transform: rotate(1deg); }
+
+    .rail-kicker,
+    .question-kicker,
+    .result-kicker,
+    .score-label,
+    .top-rank {
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(24,32,51,0.5);
+    }
+
+    .progress-big {
+      margin-top: 14px;
+      font-size: 72px;
+      line-height: 0.9;
+      font-weight: 800;
+      color: var(--navy);
+    }
+
+    .progress-track {
+      margin-top: 16px;
+      height: 14px;
+      border-radius: 999px;
+      background: rgba(24,32,51,0.08);
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      width: 0;
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--tomato), var(--yellow));
+    }
+
+    .question-panel {
+      min-height: 700px;
+      background:
+        radial-gradient(circle at 92% 14%, rgba(255, 228, 122, 0.2), transparent 18%),
+        linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,247,238,0.92));
+      transform: rotate(-0.3deg);
+    }
+
+    .question-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .phase-chip {
+      padding: 10px 14px;
+      border-radius: 16px;
+      background: rgba(24,32,51,0.06);
+      color: var(--navy);
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      transform: rotate(-2deg);
+    }
+
+    .question-title {
+      margin-top: 18px;
+      font-size: clamp(34px, 4.6vw, 54px);
+      line-height: 1.08;
+      letter-spacing: -0.04em;
+      font-weight: 800;
+      max-width: 900px;
+    }
+
+    .option-list {
+      display: grid;
+      gap: 14px;
+      margin-top: 26px;
+    }
+
+    .option {
+      width: 100%;
+      padding: 0;
+      border: 0;
+      background: none;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .option-shell {
+      display: grid;
+      grid-template-columns: 62px 1fr;
+      gap: 16px;
+      align-items: start;
+      padding: 18px;
+      border-radius: 24px;
+      background: #fffdf8;
+      border: 1px solid rgba(24,32,51,0.08);
+      box-shadow: 0 8px 18px rgba(29,43,83,0.05);
+      transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
+    }
+
+    .option:nth-child(odd) .option-shell { transform: rotate(-0.7deg); }
+    .option:nth-child(even) .option-shell { transform: rotate(0.7deg); }
+
+    .option:hover .option-shell {
+      transform: translateX(6px) rotate(0deg);
+      background: #fffaf4;
+      box-shadow: 0 14px 28px rgba(29,43,83,0.1);
+    }
+
+    .option-key {
+      width: 62px;
+      height: 62px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, var(--navy), #3650a2);
+      color: #fffdf8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      font-weight: 800;
+    }
+
+    .option-text {
+      margin-top: 0;
+      color: #3a4258;
+      font-size: 16px;
+    }
+
+    .result-hero {
+      padding: 28px;
+      background:
+        radial-gradient(circle at 84% 18%, rgba(255, 228, 122, 0.3), transparent 20%),
+        linear-gradient(150deg, #1d2b53 0%, #2d3f74 52%, #3f59a4 100%);
+      color: #fffdf8;
+      transform: rotate(0.4deg);
+    }
+
+    .result-hero::after {
+      content: "WOW";
+      position: absolute;
+      right: 22px;
+      top: 16px;
+      font-size: 86px;
+      font-weight: 900;
+      letter-spacing: -0.08em;
+      color: rgba(255,255,255,0.08);
+      pointer-events: none;
+    }
+
+    .result-title {
+      margin-top: 16px;
+      font-size: clamp(44px, 5.4vw, 76px);
+      line-height: 0.92;
+      font-weight: 900;
+      letter-spacing: -0.06em;
+      max-width: 520px;
+    }
+
+    .result-subtitle {
+      margin-top: 12px;
+      font-size: 17px;
+      color: rgba(255,248,241,0.76);
+    }
+
+    .result-verdict {
+      margin-top: 18px;
+      font-size: 16px;
+      line-height: 1.88;
+      color: rgba(255,249,243,0.9);
+    }
+
+    .tag-row {
+      margin-top: 18px;
+    }
+
+    .result-tag {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #fffdf8;
+    }
+
+    .share-card {
+      margin-top: 18px;
+      padding: 18px;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.8);
+      border: 1px dashed rgba(24,32,51,0.14);
+      transform: rotate(1deg);
+    }
+
+    .score-row,
+    .top-row {
+      margin-top: 18px;
+    }
+
+    .score-card {
+      flex: 1;
+      min-width: 180px;
+      background: rgba(255,255,255,0.82);
+    }
+
+    .score-card:nth-child(1) { transform: rotate(-0.6deg); }
+    .score-card:nth-child(2) { transform: rotate(0.8deg); }
+    .score-card:nth-child(3) { transform: rotate(-1deg); }
+
+    .score-name {
+      margin-top: 10px;
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--ink);
+    }
+
+    .score-value {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .top-item {
+      flex: 1;
+      min-width: 210px;
+      padding: 18px;
+      border-radius: 24px;
+      background: #fffdf8;
+      border: 1px solid rgba(24,32,51,0.08);
+      box-shadow: 0 8px 18px rgba(29,43,83,0.05);
+    }
+
+    .top-item:nth-child(1) { transform: rotate(-1deg); }
+    .top-item:nth-child(2) { transform: rotate(0.8deg); }
+    .top-item:nth-child(3) { transform: rotate(-0.4deg); }
+
+    .top-name {
+      margin-top: 10px;
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .top-copy { margin-top: 8px; }
+
+    .list-stack {
+      display: grid;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .list-card {
+      background: rgba(255,255,255,0.82);
+    }
+
+    .list-card:nth-child(odd) { transform: rotate(-0.3deg); }
+    .list-card:nth-child(even) { transform: rotate(0.35deg); }
+
+    .list-card ul {
+      margin: 0;
+      padding-left: 20px;
+      color: #3b4257;
+      line-height: 1.9;
+      font-size: 15px;
+    }
+
+    .roast {
+      margin-top: 0;
+      color: #3b4257;
+      font-size: 16px;
+    }
+
+    @media (max-width: 980px) {
+      .landing-grid,
+      .quiz-grid,
+      .result-grid {
+        grid-template-columns: 1fr;
       }
 
-      .check-grid,
-      .tip-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+      .hero-cards {
+        position: static;
+        width: auto;
+        margin-top: 24px;
+      }
+
+      .rail {
+        position: static;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .shell {
+        width: calc(100vw - 16px);
+        padding-top: 12px;
+      }
+
+      .hero-panel,
+      .side-card,
+      .story-card,
+      .question-panel,
+      .rail-card,
+      .result-hero,
+      .score-card,
+      .list-card {
+        padding: 20px;
+      }
+
+      .hero-title {
+        font-size: 60px;
+      }
+
+      .question-title {
+        font-size: 34px;
+      }
+
+      .result-title {
+        font-size: 46px;
+      }
+
+      .role-cloud,
+      .story-grid {
+        grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
-
 <body>
-  <div class="page">
-    <div class="phone-shell">
-      <div class="phone-screen">
-        <div class="status-bar">
-          <span>09:41</span>
-          <div class="status-right">
-            <span>5G</span>
-            <span>88%</span>
+  <div class="float-blob blob-a"></div>
+  <div class="float-blob blob-b"></div>
+  <div class="float-blob blob-c"></div>
+
+  <main class="shell">
+    <div class="topline">
+      <div class="brand-chip"><span class="brand-dots"></span>WORKPLACE PERSONA PLAYGROUND</div>
+      <div>less formal. more alive.</div>
+    </div>
+
+    <section id="landing" class="landing-grid">
+      <div class="panel hero-panel">
+        <div class="hero-doodles">
+          <div class="doodle doodle-a"></div>
+          <div class="doodle doodle-b"></div>
+        </div>
+
+        <div class="hero-sticker">not another serious personality test</div>
+        <h1 class="hero-title"><span>工位人格</span><span>研究所</span></h1>
+        <p class="hero-copy">把你归类成 108 种工作风格角色之一。不是一本正经地分析灵魂，而是把开会、汇报、返工和跨部门拉扯时最真实的你抓出来。</p>
+        <p class="hero-subcopy">我们不问你“更偏内向还是外向”，我们更关心“老板临时改需求时，你是先冲、先排、先拆、先怼，还是先把快炸掉的气氛接住”。</p>
+        <div class="stat-row">
+          <span class="stat-pill">36 题主测</span>
+          <span class="stat-pill">9 题风格加试</span>
+          <span class="stat-pill">108 个离谱但贴脸的称号</span>
+        </div>
+        <div class="action-row" style="margin-top:28px;">
+          <button id="startBtn" class="button primary">开始暴露工位本性</button>
+        </div>
+
+        <div class="hero-cards">
+          <div class="mini-float">
+            <strong>45Q</strong>
+            <span>不是答题流程，是一场工位人格翻包检查。</span>
+          </div>
+          <div class="mini-float">
+            <strong>HOT TAKE</strong>
+            <span>比起 MBTI，你更容易被“跨部门群聊里会不会爆炸”定义。</span>
           </div>
         </div>
-        <main class="content" id="app">
-          <section class="loading-card">正在加载给她看的小程序开发流程...</section>
-        </main>
       </div>
-    </div>
-  </div>
+
+    </section>
+
+    <section id="quiz" class="quiz-grid hidden">
+      <aside class="rail">
+        <div class="panel rail-card">
+          <div class="rail-kicker">current mode</div>
+          <div id="phaseLabel" class="progress-big">主测</div>
+          <div id="progressText" class="meta-copy">第 1 / 45 题</div>
+          <div class="progress-track">
+            <div id="progressFill" class="progress-fill"></div>
+          </div>
+          <div id="progressCopy" class="meta-copy" style="margin-top:16px;"></div>
+        </div>
+
+        <div class="panel rail-card">
+          <div class="rail-kicker">friendly reminder</div>
+          <div class="section-title" style="font-size:24px;">别选体面答案</div>
+          <div class="meta-copy">选你真正会在工位上做出来的那种反应。越诚实，结果越像你本人，越适合发给同事互相对号入座。</div>
+        </div>
+      </aside>
+
+      <div class="panel question-panel">
+        <div class="question-head">
+          <div class="question-kicker">pick the one that feels painfully true</div>
+          <div class="phase-chip">single choice</div>
+        </div>
+        <h2 id="questionTitle" class="question-title"></h2>
+        <div id="optionList" class="option-list"></div>
+      </div>
+    </section>
+
+    <section id="result" class="result-grid hidden">
+      <aside class="rail">
+        <div class="panel result-hero">
+          <div class="result-kicker">your workplace code name</div>
+          <div id="resultTitle" class="result-title"></div>
+          <div id="resultSubtitle" class="result-subtitle"></div>
+          <div id="resultVerdict" class="result-verdict"></div>
+          <div id="resultTags" class="tag-row"></div>
+
+          <div class="share-card">
+            <div class="rail-kicker">share this line</div>
+            <div id="shareCopy" class="meta-copy"></div>
+          </div>
+        </div>
+      </aside>
+
+      <div>
+        <div id="scoreRow" class="score-row"></div>
+        <div id="topList" class="top-row"></div>
+
+        <div class="list-stack">
+          <div class="panel list-card">
+            <div class="list-title">高光技能</div>
+            <ul id="strengthList"></ul>
+          </div>
+          <div class="panel list-card">
+            <div class="list-title">隐藏雷区</div>
+            <ul id="riskList"></ul>
+          </div>
+          <div class="panel list-card">
+            <div class="list-title">适合场景</div>
+            <ul id="sceneList"></ul>
+          </div>
+          <div class="panel list-card">
+            <div class="list-title">黑话点评</div>
+            <div id="roastText" class="roast"></div>
+          </div>
+        </div>
+
+        <div class="action-row" style="margin-top:18px;">
+          <button id="restartBtn" class="button secondary">重新测一次</button>
+          <button id="copyBtn" class="button primary">复制结果文案</button>
+        </div>
+      </div>
+    </section>
+  </main>
 
   <script>
-    async function init() {
-      const app = document.getElementById("app");
+    const PROGRESS_COPY = [
+      '你已经击败 37% 的嘴硬同事，继续暴露本性。',
+      '别慌，测出来不是有病，只是有工龄。',
+      '目前看你还算克制，再答几题就原形毕露了。',
+      '你的工位灵魂正在加载，请继续提交证词。',
+      '再坚持一下，职场宇宙快把你归类了。'
+    ];
 
-      try {
-        const response = await fetch("/api/guide");
-        if (!response.ok) {
-          throw new Error("request failed");
-        }
+    const MAIN_TYPES = [
+      { key: '推进', label: '推进者', summary: '项目不动时，你就是那个先把第一脚油门踩下去的人。' },
+      { key: '统筹', label: '统筹师', summary: '你擅长把一团乱麻重新排成一张能执行的路线图。' },
+      { key: '执行', label: '执行官', summary: '别人负责说要做什么，你负责把它真的做完。' },
+      { key: '洞察', label: '洞察者', summary: '你对问题的嗅觉很灵，能看到别人没看到的裂缝。' },
+      { key: '创意', label: '创意妖精', summary: '你总能从老问题里翻出一条意外但好用的新路。' },
+      { key: '破局', label: '破局狂人', summary: '难啃的硬骨头、僵住的局，你往往是第一个敢下手的人。' },
+      { key: '协调', label: '协调器', summary: '你会把快散架的合作关系重新粘回一条船上。' },
+      { key: '稳定', label: '稳定器', summary: '风险来时你像减震器，团队乱时你像兜底网。' },
+      { key: '战略', label: '布局师', summary: '你看事情不只看今天，更会看半年后的走向。' },
+      { key: '成长', label: '升级怪', summary: '你的人设不是会不会，而是会不会很快就会。' },
+      { key: '资源', label: '资源磁铁', summary: '你擅长把机会、人和外部支持拉到同一张牌桌上。' },
+      { key: '影响', label: '影响力引擎', summary: '你会把观点讲到别人愿意听，也愿意跟。' }
+    ];
 
-        const result = await response.json();
-        render(result.data);
-      } catch (error) {
-        app.innerHTML = '<section class="loading-card">内容加载失败，请稍后刷新再试。</section>';
-      }
+    const STYLE_TYPES = [
+      { key: '烈焰', label: '烈焰型', tags: ['爆发', '带节奏'], flair: '出手像点火' },
+      { key: '寒锋', label: '寒锋型', tags: ['冷静', '切核心'], flair: '判断像手术刀' },
+      { key: '星火', label: '星火型', tags: ['起势', '持续带动'], flair: '推进像慢慢起势的连锁反应' },
+      { key: '雷达', label: '雷达型', tags: ['嗅觉', '预判'], flair: '感知环境像开了扫描模式' },
+      { key: '磁场', label: '磁场型', tags: ['吸附', '凝聚'], flair: '会自然把人和注意力吸过来' },
+      { key: '引擎', label: '引擎型', tags: ['驱动', '持续'], flair: '靠稳定推进制造惯性' },
+      { key: '锚点', label: '锚点型', tags: ['稳场', '兜底'], flair: '关键时刻最会稳住底盘' },
+      { key: '棱镜', label: '棱镜型', tags: ['变招', '视角'], flair: '擅长切换角度重新拆题' },
+      { key: '回声', label: '回声型', tags: ['共鸣', '感受力'], flair: '很懂怎么承接现场情绪和共鸣' }
+    ];
+
+    const ROLE_NAME_MAP = {
+      推进: ['破晓冲锋手', '冷启动刀客', '节奏点燃师', '战机捕手', '全员开跑器', '进度推进轴', '硬仗顶梁柱', '突围变招王', '士气带动器'],
+      统筹: ['红线总调官', '优先级裁刀手', '排程唤醒师', '全局扫描仪', '协作织网官', '流程发动机', '定盘控场师', '结构折叠师', '共识拼装员'],
+      执行: ['交付爆冲手', '标准切面师', '任务起推器', '细节巡航员', '落地带动者', '闭环压路机', '靠谱压舱石', '步骤调优匠', '协作补位员'],
+      洞察: ['真相爆灯官', '逻辑解剖刀', '问题引燃点', '异常追踪犬', '认知牵引者', '根因挖掘机', '风险预警塔', '多面拆解师', '盲点回音壁'],
+      创意: ['脑洞喷焰兽', '套路切割师', '灵感火苗怪', '新鲜感捕手', '点子聚光体', '创意发条盒', '妙招备份仓', '概念折光师', '气氛活化剂'],
+      破局: ['僵局爆破王', '痛点穿刺者', '裂缝开凿客', '死局嗅探犬', '变革带电体', '破墙推进器', '翻盘定海针', '逆局转向盘', '醒脑敲钟人'],
+      协调: ['气氛回春手', '分歧拆弹员', '默契点灯人', '情绪感应器', '团队黏合糖', '协同传动轴', '关系缓冲垫', '立场翻译官', '共情扩音器'],
+      稳定: ['兜底防爆阀', '风险截流刀', '秩序续航灯', '故障预警哨', '安心定锚场', '系统稳压器', '定海压舱石', '预案转圜师', '情绪稳频器'],
+      战略: ['远景点火官', '赛道剖面刀', '先手埋线师', '趋势瞭望塔', '方向聚势者', '战略驱动轴', '路线定标仪', '路线折光师', '愿景传声筒'],
+      成长: ['成长暴走体', '技能磨刃师', '升级小火箭', '反馈接收器', '进步感染源', '迭代永动机', '复盘蓄能仓', '方法变形师', '经验放大器'],
+      资源: ['机会点火器', '关系破冰刀', '人脉引线师', '贵人雷达站', '链接吸附体', '合作发动仓', '外援停泊港', '资源转接盘', '信任回流阀'],
+      影响: ['舞台燃场王', '观点穿透者', '说服起势官', '场面读秒器', '号召风暴眼', '表达驱动轴', '信任定桩器', '叙事折射师', '共鸣扩散器']
+    };
+
+    const MAIN_DETAILS = {
+      推进: { aura: '项目不动时，你会先替全组把那口气提起来。', strengths: ['起势快', '抗压冲锋', '能把停滞场面推活'], risks: ['容易上头', '嫌别人慢', '可能先冲后补边界'], scenes: ['新项目起盘', '上线前救火', '需要有人先开第一枪的局'], roast: '老板眼里的定心丸，同事眼里的加速踏板。' },
+      统筹: { aura: '你不是单纯会安排，是会把混乱翻译成执行秩序。', strengths: ['全局视角', '优先级清晰', '能把多人协作拧成一股绳'], risks: ['容易替所有人操心', '对失序耐受低', '可能把自己变成流程 CPU'], scenes: ['跨部门项目', '多人并行推进', '流程繁杂的协作局'], roast: '没有你，大家都很自由；有了你，事情终于会落地。' },
+      执行: { aura: '你最大的压迫感，是“说完没多久就真做完了”。', strengths: ['交付稳定', '细节靠谱', '闭环能力强'], risks: ['容易被当万能补位', '不爱空谈', '可能吞掉自己的情绪成本'], scenes: ['复杂交付', '需要耐心落地的长任务', '反复迭代但必须准时完成的活'], roast: '你最像公司的隐形地基，平时没人夸，塌了全都慌。' },
+      洞察: { aura: '你常常比问题本人更早知道问题快来了。', strengths: ['抓盲点', '看本质', '风险预警快'], risks: ['容易显得挑剔', '对低质量逻辑没有耐心', '太早说真话会吓到人'], scenes: ['需求评审', '策略复盘', '找根因和拆问题的局'], roast: '你不是爱杠，你只是常年活在“这明显不对啊”的精神世界。' },
+      创意: { aura: '你擅长给已经发霉的思路开一扇新窗。', strengths: ['点子新鲜', '表达有趣', '善于打破套路'], risks: ['讨厌一成不变', '可能开脑洞太快', '容易先被灵感带跑'], scenes: ['脑暴会', '品牌内容', '需要出奇招的卡点'], roast: '别人负责正常发挥，你负责突然让会议有点东西。' },
+      破局: { aura: '你对卡住的东西有天然攻击欲，越难越想拆。', strengths: ['敢碰硬骨头', '直切关键', '能把僵局硬撬开'], risks: ['讲话太直', '容易把耐心留给结果不留给过程', '可能显得攻击性强'], scenes: ['僵局重启', '组织老问题清理', '需要有人顶着阻力改规则'], roast: '你像工位上的拆墙队，噪音大，但墙是真的会倒。' },
+      协调: { aura: '你会替团队处理那些没人写进 JD、但每天都在消耗合作的东西。', strengths: ['共情力', '缓冲冲突', '能把人重新拉回同一桌'], risks: ['容易过度体谅', '自己受气不一定说', '可能承担太多情绪劳动'], scenes: ['跨团队沟通', '矛盾调停', '需要建立默契的合作局'], roast: '没有你时，群聊像火药桶；有你后，大家至少像人类。' },
+      稳定: { aura: '你像系统里的稳压器，别人上头的时候你负责别炸。', strengths: ['风险控制', '兜底能力', '节奏稳'], risks: ['容易背太多保底责任', '对变化会先看风险', '偶尔被误解成保守'], scenes: ['高风险上线', '流程兜底', '需要长期可靠输出的岗位'], roast: '大家平安下班，里头往往有你默默挡过的锅。' },
+      战略: { aura: '你很少只看今天这一步，更在意棋盘往哪边延展。', strengths: ['看方向', '抓窗口', '能给团队定路线'], risks: ['容易嫌眼前活琐碎', '过早谈未来会让人跟不上', '可能显得太高空'], scenes: ['业务规划', '新方向判断', '需要做长期布局的场景'], roast: '别人还在填表，你已经想完了下季度的局。' },
+      成长: { aura: '你的人设不是全能，而是很快升级成能打。', strengths: ['学习速度快', '会复盘', '愿意迭代自己'], risks: ['容易对自己要求过高', '可能把成长焦虑当燃料', '总觉得还能更强'], scenes: ['转型期', '新领域学习', '需要快速补位的新任务'], roast: '别人是上班，你像在打升级副本，经验值恨不得肉眼可见。' },
+      资源: { aura: '你不是在找人脉，你是在给事情找通路。', strengths: ['链接机会', '借外力', '知道关键人在哪'], risks: ['容易被误会太圆滑', '可能把自己放在长期在线状态', '维护关系有隐性成本'], scenes: ['合作撮合', '商务联动', '需要盘活外部支持的项目'], roast: '你像工位通讯录成精，关键时刻总能摇到人。' },
+      影响: { aura: '你不一定最会做，但常常最会让大家理解为什么要这么做。', strengths: ['表达强', '能统一认知', '擅长调动情绪和信任'], risks: ['容易承担过多对外表达压力', '如果环境不配合会很消耗', '可能被误会成只会说'], scenes: ['提案汇报', '团队动员', '要把复杂事讲清楚的时刻'], roast: '你像项目自带麦克风，关键时刻能把气氛和共识一起拉起来。' }
+    };
+
+    const MAIN_QUESTIONS = [
+      q(1,'周一早上老板突然说“这个事今天就得出”，你的第一反应是？',[o('A','先冲，做个能看的版本再说。','推进'),o('B','先拉清楚需求，不然一会儿全员返工。','统筹'),o('C','先把手头步骤拆出来，一项项做掉。','执行'),o('D','先怀疑一句：这需求真有必要今天出吗？','洞察')]),
+      q(2,'开项目会时，你最像哪一种人？',[o('A','还没讲完我已经想开干了。','推进'),o('B','我在默默记谁负责、哪天交、依赖谁。','统筹'),o('C','我只关心最后具体要我做什么。','执行'),o('D','我在听哪里逻辑不通，准备会后灵魂发问。','洞察')]),
+      q(3,'面对一堆待办，你通常会？',[o('A','先啃最难的，狠狠干一下提士气。','推进'),o('B','先排优先级，谁都别想插队。','统筹'),o('C','先从最确定的开始，保证持续清空。','执行'),o('D','先看这些待办里有没有伪需求。','洞察')]),
+      q(4,'你最受不了哪种同事？',[o('A','说得热血沸腾但半天不动。','推进'),o('B','谁都在做，但没人知道整体进展。','统筹'),o('C','方案改来改去，最后没人落地。','执行'),o('D','“一直都是这么干的，你别问。”','洞察')]),
+      q(5,'deadline 还有 2 小时，你通常是？',[o('A','极限冲刺型选手，先救命再讲美学。','推进'),o('B','一边催人一边拼资源，像临时总指挥。','统筹'),o('C','戴上耳机进入机械飞升模式。','执行'),o('D','临门一脚前还在排查有没有暗雷。','洞察')]),
+      q(6,'领导说“先随便做个 demo 看看”，你会？',[o('A','好，这种模糊仗我熟。','推进'),o('B','“随便”是多随便，我得先定义下边界。','统筹'),o('C','给我个最小版本，我马上做。','执行'),o('D','demo 的目标是验证什么，我想先问明白。','洞察')]),
+      q(7,'别人眼里的你更像？',[o('A','干起来像点了加速。','推进'),o('B','脑子里像装了项目管理系统。','统筹'),o('C','事情交给我，至少不会烂尾。','执行'),o('D','总能发现“这事不对劲”的地方。','洞察')]),
+      q(8,'如果工位上贴一句你的座右铭，会是？',[o('A','先跑起来，别原地开战略会。','推进'),o('B','不排计划的努力，都是群体白忙。','统筹'),o('C','你给我确定版，我给你完成版。','执行'),o('D','问题不在表面，在你没往下扒。','洞察')]),
+      q(9,'同事突然甩给你一个烂摊子，你会？',[o('A','先接住，别让事情死在当场。','推进'),o('B','先问清来龙去脉和责任边界。','统筹'),o('C','先把已知内容接着做完。','执行'),o('D','先研究它为什么会烂成这样。','洞察')]),
+      q(10,'你最有成就感的时刻是？',[o('A','一群人还在讨论时，我已经推进半程。','推进'),o('B','一盘散沙终于被我排出秩序。','统筹'),o('C','一项复杂任务被我稳稳交付。','执行'),o('D','所有人忽略的问题被我提前抓到。','洞察')]),
+      q(11,'遇到需求频繁变更时，你通常？',[o('A','改就改，别耽误上线。','推进'),o('B','改可以，先走变更流程。','统筹'),o('C','你定版，我执行，不要反复横跳。','执行'),o('D','我想知道为什么总在变，是前面没想清吗。','洞察')]),
+      q(12,'如果公司断网半小时，你最可能在干嘛？',[o('A','找热点继续冲。','推进'),o('B','借机把接下来几件事重新排布。','统筹'),o('C','整理本地资料，能做一点是一点。','执行'),o('D','观察大家失去网络后暴露出的组织真相。','洞察')]),
+      q(13,'跨部门合作开撕时，你通常会？',[o('A','先出个新点子，把大家从旧框架里拽出来。','创意'),o('B','直接挑关键矛盾下刀，不绕。','破局'),o('C','先安抚气氛，别让群聊变法庭。','协调'),o('D','先把规则和流程摆出来，按规矩来。','稳定')]),
+      q(14,'你在脑暴会里的真实状态更像？',[o('A','点子像烟花，一会儿一个。','创意'),o('B','专门负责掀桌问“凭什么这么做”。','破局'),o('C','负责把每个人都拉进讨论。','协调'),o('D','负责提醒大家别嗨过头，最后没人收。','稳定')]),
+      q(15,'你最常说的一句话可能是？',[o('A','要不我们换个角度玩一下？','创意'),o('B','这套不行，得重来。','破局'),o('C','大家先别急，我们一个个说。','协调'),o('D','先按已有机制走，别现场发明制度。','稳定')]),
+      q(16,'遇到老流程老规矩，你会？',[o('A','先想能不能改得更有意思。','创意'),o('B','先想能不能直接砸掉重做。','破局'),o('C','先想怎么让改动不伤人。','协调'),o('D','先想改了以后风险谁兜底。','稳定')]),
+      q(17,'同事评价你“最有可能拯救会议”的方式是？',[o('A','我一开口，空气都变新鲜了。','创意'),o('B','我一开口，废话都被砍掉了。','破局'),o('C','我一开口，快吵起来的人又坐下了。','协调'),o('D','我一开口，大家终于知道按什么执行。','稳定')]),
+      q(18,'如果团队像一艘船，你更像？',[o('A','甲板上举着奇怪地图的人。','创意'),o('B','拿斧头劈开冰层的人。','破局'),o('C','在船舱里劝大家别互相掐脖子的人。','协调'),o('D','一直在补船缝防进水的人。','稳定')]),
+      q(19,'面对“这个事从来没人这么做过”，你会？',[o('A','哇，那不正好好玩。','创意'),o('B','那就由我来做第一个。','破局'),o('C','先看看谁会被影响，别把人创飞。','协调'),o('D','先做风险预案，再谈新不新。','稳定')]),
+      q(20,'当团队气氛很丧时，你更可能？',[o('A','抛个离谱但妙的想法把人逗醒。','创意'),o('B','直接说真话，把遮羞布掀了。','破局'),o('C','私聊安慰一圈，先把情绪稳住。','协调'),o('D','把节奏拉回正常，让事情继续转。','稳定')]),
+      q(21,'你最烦哪种工作场景？',[o('A','什么都不能改，只能照旧。','创意'),o('B','明明有病还装没病。','破局'),o('C','大家阴阳怪气但没人明说。','协调'),o('D','今天一个说法、明天一个口径。','稳定')]),
+      q(22,'如果你在群聊里发一句话，最像哪种？',[o('A','我有个脑洞，先别骂。','创意'),o('B','这事最大的问题不是表面那个。','破局'),o('C','我总结一下大家现在的分歧。','协调'),o('D','为了避免失控，我建议这么定。','稳定')]),
+      q(23,'项目卡住时，你最自然的动作是？',[o('A','试试旁门左道。','创意'),o('B','直接掀掉卡住的那块。','破局'),o('C','先把关键人重新拉到一桌上。','协调'),o('D','先做个保底方案别全盘崩。','稳定')]),
+      q(24,'如果老板说“你来处理这个敏感事”，多半因为你？',[o('A','能想出别人想不到的转法。','创意'),o('B','敢碰硬骨头。','破局'),o('C','不容易把人得罪死。','协调'),o('D','做事最稳，不容易出事故。','稳定')]),
+      q(25,'当你看见一个新机会时，第一反应更像？',[o('A','这事要是做成，半年后版图会变。','战略'),o('B','正好拿来练级，我能长本事。','成长'),o('C','这个机会背后关键人是谁。','资源'),o('D','我怎么把这件事讲到大家都买账。','影响')]),
+      q(26,'遇到更强的人，你通常会？',[o('A','观察他在更大的棋盘上怎么想。','战略'),o('B','偷师，恨不得把对方脑子拆开学。','成长'),o('C','先建立连接，留条后路。','资源'),o('D','研究他为什么能让别人信服。','影响')]),
+      q(27,'你最容易因为哪件事兴奋？',[o('A','想清楚“我们接下来该往哪打”。','战略'),o('B','发现自己又会了一个新技能。','成长'),o('C','认识了一个能打开新局面的人。','资源'),o('D','台上讲完，台下真的有人被说动。','影响')]),
+      q(28,'领导突然问你“你怎么看明年”，你会？',[o('A','先讲方向、窗口期和优先级。','战略'),o('B','先讲团队缺什么能力要补。','成长'),o('C','先讲有哪些资源要提前占。','资源'),o('D','先讲怎么统一认知和对外表达。','影响')]),
+      q(29,'别人卷证书，你更可能卷什么？',[o('A','行业趋势和路径判断。','战略'),o('B','新技能、新方法、新工具。','成长'),o('C','人脉、合作机会和圈层入口。','资源'),o('D','表达、汇报、提案和说服力。','影响')]),
+      q(30,'你心里的“隐形财富”更像是？',[o('A','我看得比别人早一点。','战略'),o('B','我学得比别人快一点。','成长'),o('C','我认识的人和能借的力。','资源'),o('D','我能让别人愿意听我说。','影响')]),
+      q(31,'如果让你带一个新项目，你最先补的是？',[o('A','目标地图和节奏路线。','战略'),o('B','自己和团队的能力短板。','成长'),o('C','外部支持和内部盟友。','资源'),o('D','对上对下的叙事口径。','影响')]),
+      q(32,'当你觉得职业发展卡住时，你最可能想？',[o('A','是不是方向选错了。','战略'),o('B','是不是我还不够强。','成长'),o('C','是不是我缺关键连接。','资源'),o('D','是不是我不会把自己讲出来。','影响')]),
+      q(33,'你最想拥有哪种超能力？',[o('A','提前看见行业风往哪吹。','战略'),o('B','一夜学会别人三个月的东西。','成长'),o('C','打开通讯录全是能帮上忙的人。','资源'),o('D','说一句话就让全场点头。','影响')]),
+      q(34,'饭局上你最像哪种人？',[o('A','聊着聊着就开始分析格局。','战略'),o('B','抓着高手问“你这个怎么练的”。','成长'),o('C','迅速把人和人连起来。','资源'),o('D','讲故事讲到整桌都听你。','影响')]),
+      q(35,'如果有一次公开汇报机会，你更看重？',[o('A','借机影响后面的业务方向。','战略'),o('B','把它当成一次能力升级副本。','成长'),o('C','借机结识关键角色。','资源'),o('D','借机把个人存在感打出来。','影响')]),
+      q(36,'你最希望别人记住你的地方是？',[o('A','我不是忙，我是看得远。','战略'),o('B','我不是会，我是一直在进化。','成长'),o('C','我不是熟，我是真的能把人和机会接起来。','资源'),o('D','我不是能说，我是能让人愿意跟。','影响')])
+    ];
+
+    const STYLE_QUESTIONS = [
+      q(101,'你最常见的工作出招方式是？',[o('A','气势先到位，先把场子点燃。','烈焰'),o('B','冷静切核心，一刀下去见骨头。','寒锋'),o('C','先丢个小火花，慢慢把人带动起来。','星火')]),
+      q(102,'你在群里看到一句“有空的同学支持一下”，通常会？',[o('A','先感知局势，看看谁真着急。','雷达'),o('B','先看我能不能把人凑起来。','磁场'),o('C','先自己动起来，做了再说。','引擎')]),
+      q(103,'项目乱成一锅粥时，你的本能是？',[o('A','先稳住底盘，别再翻车。','锚点'),o('B','换个角度看，说不定路在侧面。','棱镜'),o('C','先听大家怎么想，再找那个最有共鸣的点。','回声')]),
+      q(104,'别人夸你最可能夸哪点？',[o('A','你一来，气氛和进度都燃起来了。','烈焰'),o('B','你讲话不多，但每句都挺狠。','寒锋'),o('C','你总能先带出一个可行的小开头。','星火')]),
+      q(105,'开会时你更像哪种隐藏角色？',[o('A','雷区探测器，哪不对我先闻出来。','雷达'),o('B','人群吸附器，不知不觉大家就被拉进来了。','磁场'),o('C','会议发动机，不推进我浑身难受。','引擎')]),
+      q(106,'最适合形容你工作状态的一句是？',[o('A','天塌下来先别慌，我先垫一下。','锚点'),o('B','同样一件事，我总想换个面切。','棱镜'),o('C','我很在意大家到底真正在想什么。','回声')]),
+      q(107,'如果你是一种工位上的神秘道具，会是什么？',[o('A','会自动升温的加速按钮。','烈焰'),o('B','专切废话的精密手术刀。','寒锋'),o('C','点一下就让事情开始滚动的启动器。','引擎')]),
+      q(108,'你处理复杂问题的方式更像？',[o('A','先扫描环境，风险、机会、情绪都看。','雷达'),o('B','先给所有人一个能站住的位置。','锚点'),o('C','先多面观察，再找最妙的切口。','棱镜')]),
+      q(109,'别人和你共事后的最大感受可能是？',[o('A','会不自觉地被你带动起来。','磁场'),o('B','会觉得你总能接住现场情绪。','回声'),o('C','会觉得你把事情真的推起来了。','星火')])
+    ];
+
+    const state = {
+      queue: [],
+      index: 0,
+      mainScore: emptyScore(MAIN_TYPES),
+      styleScore: emptyScore(STYLE_TYPES),
+      lastText: ''
+    };
+
+    const landingEl = document.getElementById('landing');
+    const quizEl = document.getElementById('quiz');
+    const resultEl = document.getElementById('result');
+    const phaseLabelEl = document.getElementById('phaseLabel');
+    const progressTextEl = document.getElementById('progressText');
+    const progressCopyEl = document.getElementById('progressCopy');
+    const progressFillEl = document.getElementById('progressFill');
+    const questionTitleEl = document.getElementById('questionTitle');
+    const optionListEl = document.getElementById('optionList');
+
+    document.getElementById('startBtn').addEventListener('click', startQuiz);
+    document.getElementById('restartBtn').addEventListener('click', startQuiz);
+    document.getElementById('copyBtn').addEventListener('click', copyResult);
+
+    function q(id, title, options) { return { id, title, options }; }
+    function o(key, text, scoreKey) { return { key, text, scoreKey }; }
+
+    function emptyScore(dictionary) {
+      return dictionary.reduce((acc, item) => {
+        acc[item.key] = 0;
+        return acc;
+      }, {});
     }
 
-    function render(data) {
-      const app = document.getElementById("app");
+    function shuffle(list) {
+      const cloned = [...list];
+      for (let index = cloned.length - 1; index > 0; index -= 1) {
+        const randomIndex = Math.floor(Math.random() * (index + 1));
+        [cloned[index], cloned[randomIndex]] = [cloned[randomIndex], cloned[index]];
+      }
+      return cloned;
+    }
 
-      app.innerHTML = `
-        <section class="hero-card">
-          <div class="eyebrow">${data.app.name}</div>
-          <h1 class="hero-title">${data.hero.title}</h1>
-          <p class="hero-subtitle">${data.hero.subtitle}</p>
-          <div class="chip-row">
-            ${data.hero.chips.map(chip => `<span class="chip">${chip}</span>`).join("")}
-          </div>
-        </section>
+    function startQuiz() {
+      state.index = 0;
+      state.mainScore = emptyScore(MAIN_TYPES);
+      state.styleScore = emptyScore(STYLE_TYPES);
+      state.queue = [
+        ...shuffle(MAIN_QUESTIONS.map(item => ({ ...item, phase: 'main', options: shuffle(item.options) }))),
+        ...shuffle(STYLE_QUESTIONS.map(item => ({ ...item, phase: 'style', options: shuffle(item.options) })))
+      ];
+      landingEl.classList.add('hidden');
+      resultEl.classList.add('hidden');
+      quizEl.classList.remove('hidden');
+      renderQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 
-        <section class="section-card">
-          <div class="section-head">
-            <h2 class="section-title">开发时间线</h2>
-            <span class="section-note">${data.app.audience}</span>
-          </div>
-          <div class="timeline">
-            ${data.phases.map(phase => `
-              <article class="timeline-item">
-                <div class="timeline-top">
-                  <span class="phase-id">${phase.id}</span>
-                  <span class="phase-duration">${phase.duration}</span>
-                </div>
-                <h3 class="phase-title">${phase.title}</h3>
-                <p class="phase-description">${phase.description}</p>
-                <div class="task-list">
-                  ${phase.tasks.map(task => `<div class="task">${task}</div>`).join("")}
-                </div>
-              </article>
-            `).join("")}
-          </div>
-        </section>
+    function renderQuestion() {
+      const current = state.queue[state.index];
+      const percent = Math.round((state.index / state.queue.length) * 100);
+      phaseLabelEl.textContent = current.phase === 'main' ? '主测' : '加试';
+      progressTextEl.textContent = `第 ${state.index + 1} / ${state.queue.length} 题`;
+      progressCopyEl.textContent = PROGRESS_COPY[state.index % PROGRESS_COPY.length];
+      progressFillEl.style.width = `${percent}%`;
+      questionTitleEl.textContent = current.title;
+      optionListEl.innerHTML = '';
 
-        <section class="section-card">
-          <div class="section-head">
-            <h2 class="section-title">实用清单</h2>
-            <span class="section-note">每次开发前对照一下</span>
+      current.options.forEach(option => {
+        const button = document.createElement('button');
+        button.className = 'option';
+        button.innerHTML = `
+          <div class="option-shell">
+            <div class="option-key">${option.key}</div>
+            <div class="option-text">${option.text}</div>
           </div>
-          <div class="check-grid">
-            ${data.checklist.map(group => `
-              <article class="check-card">
-                <h3 class="check-title">${group.title}</h3>
-                <div class="check-items">
-                  ${group.items.map(item => `<div class="check-item">${item}</div>`).join("")}
-                </div>
-              </article>
-            `).join("")}
-          </div>
-        </section>
+        `;
+        button.addEventListener('click', () => chooseOption(option));
+        optionListEl.appendChild(button);
+      });
+    }
 
-        <section class="section-card">
-          <div class="section-head">
-            <h2 class="section-title">给她的三个提醒</h2>
-            <span class="section-note">把开发这件事看简单一点</span>
-          </div>
-          <div class="tip-grid">
-            ${data.tips.map(tip => `
-              <article class="tip-card">
-                <h3 class="tip-title">${tip.title}</h3>
-                <p class="tip-content">${tip.content}</p>
-              </article>
-            `).join("")}
-          </div>
-        </section>
+    function chooseOption(option) {
+      const current = state.queue[state.index];
+      if (current.phase === 'main') {
+        state.mainScore[option.scoreKey] += 1;
+      } else {
+        state.styleScore[option.scoreKey] += 1;
+      }
+      state.index += 1;
+      if (state.index >= state.queue.length) {
+        renderResult();
+        return;
+      }
+      renderQuestion();
+    }
 
-        <section class="section-card">
-          <div class="section-head">
-            <h2 class="section-title">常见问题</h2>
-            <span class="section-note">先解决最常卡住的点</span>
-          </div>
-          <div class="faq-list">
-            ${data.faq.map(item => `
-              <article class="faq-item">
-                <h3 class="faq-question">${item.question}</h3>
-                <p class="faq-answer">${item.answer}</p>
-              </article>
-            `).join("")}
-          </div>
-        </section>
+    function rank(board, dictionary) {
+      return dictionary.map(item => ({
+        key: item.key,
+        label: item.label,
+        score: board[item.key] || 0,
+        summary: item.summary || item.flair
+      })).sort((a, b) => b.score - a.score);
+    }
 
-        <section class="footer-card">
-          <div class="footer-signature">${data.footer.signature}</div>
-          <p class="footer-message">${data.footer.message}</p>
-        </section>
+    function renderResult() {
+      const rankedMain = rank(state.mainScore, MAIN_TYPES);
+      const rankedStyle = rank(state.styleScore, STYLE_TYPES);
+      const primary = rankedMain[0];
+      const secondary = rankedMain[1] || rankedMain[0];
+      const style = rankedStyle[0];
+      const styleIndex = STYLE_TYPES.findIndex(item => item.key === style.key);
+      const detail = MAIN_DETAILS[primary.key];
+      const styleMeta = STYLE_TYPES[styleIndex];
+      const roleName = ROLE_NAME_MAP[primary.key][styleIndex];
+      const verdict = `${detail.aura}${style.label}的你，${styleMeta.flair}。`;
+      const tags = [...detail.strengths.slice(0, 2), ...styleMeta.tags];
+      const shareLine = `我是 ${roleName}，表面 ${primary.label}，骨子里还藏着 ${secondary.label}。`;
+
+      quizEl.classList.add('hidden');
+      resultEl.classList.remove('hidden');
+
+      document.getElementById('resultTitle').textContent = roleName;
+      document.getElementById('resultSubtitle').textContent = `${primary.label} x ${style.label}`;
+      document.getElementById('resultVerdict').textContent = verdict;
+      document.getElementById('resultTags').innerHTML = tags.map(tag => `<span class="result-tag">${tag}</span>`).join('');
+      document.getElementById('shareCopy').textContent = shareLine;
+
+      document.getElementById('scoreRow').innerHTML = [
+        scoreCard('主人格', primary.label, `${primary.score} 分`),
+        scoreCard('副人格', secondary.label, `${secondary.score} 分`),
+        scoreCard('出招风格', style.label, `${style.score} 分`)
+      ].join('');
+
+      document.getElementById('topList').innerHTML = rankedMain.slice(0, 3).map((item, index) => `
+        <div class="top-item">
+          <div class="top-rank">TOP ${index + 1}</div>
+          <div class="top-name">${item.label}</div>
+          <div class="top-copy">${item.score} 分 · ${item.summary}</div>
+        </div>
+      `).join('');
+
+      setList('strengthList', [
+        `你的主打法是 ${detail.strengths.join('、')}。`,
+        `你带着 ${style.label} 的手感做事，现场通常会先感受到你的 ${styleMeta.tags.join('和')}。`,
+        `副人格偏 ${secondary.label}，说明你不只有一种做事电路，压力来时会自动切另一套打法。`
+      ]);
+
+      setList('riskList', [
+        `你的常见翻车点是 ${detail.risks.join('、')}。`,
+        `当 ${style.label} 模式拉满时，你可能会把自己的优势推到过量使用。`,
+        `如果团队没有给你足够反馈，你会倾向于自己默默接管更多责任。`
+      ]);
+
+      setList('sceneList', [
+        `你最适合的局通常是：${detail.scenes.join('、')}。`,
+        `如果把你放在需要 ${primary.label} 又允许 ${style.label} 发挥的岗位里，存在感会直接翻倍。`
+      ]);
+
+      document.getElementById('roastText').textContent = `黑话点评：${detail.roast}`;
+      state.lastText = `我的职场人格是：${roleName}\n${primary.label} x ${style.label}\n${verdict}\n副人格：${secondary.label}\n${shareLine}\n黑话点评：${detail.roast}`;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function scoreCard(label, name, value) {
+      return `
+        <div class="panel score-card">
+          <div class="score-label">${label}</div>
+          <div class="score-name">${name}</div>
+          <div class="score-value">${value}</div>
+        </div>
       `;
     }
 
-    init();
+    function setList(id, items) {
+      document.getElementById(id).innerHTML = items.map(item => `<li>${item}</li>`).join('');
+    }
+
+    async function copyResult() {
+      if (!state.lastText) return;
+      try {
+        await navigator.clipboard.writeText(state.lastText);
+        alert('结果文案已复制');
+      } catch (error) {
+        alert(state.lastText);
+      }
+    }
   </script>
 </body>
-
 </html>

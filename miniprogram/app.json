@@ -1,0 +1,14 @@
+{
+  "pages": [
+    "pages/index/index"
+  ],
+  "window": {
+    "navigationBarTitleText": "工位人格研究所",
+    "navigationBarBackgroundColor": "#1f2143",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#fff7f0",
+    "backgroundTextStyle": "light"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

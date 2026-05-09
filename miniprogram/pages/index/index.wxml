@@ -1,0 +1,190 @@
+<view class="page-shell">
+  <view class="ambient ambient-a"></view>
+  <view class="ambient ambient-b"></view>
+
+  <view class="container" wx:if="{{stage === 'landing'}}">
+    <view class="hero-panel">
+      <view class="hero-topline">WORKPLACE PERSONA LAB</view>
+      <view class="hero-title">工位人格研究所</view>
+      <view class="hero-subtitle">给每个打工人一个离谱但贴脸的职场角色名</view>
+
+      <view class="tag-row">
+        <view class="tag-pill" wx:for="{{introTags}}" wx:key="*this">{{item}}</view>
+      </view>
+
+      <view class="hero-card">
+        <view class="hero-card-kicker">本次测试会产出</view>
+        <view class="hero-card-title">主人格 + 副人格 + 108 角色称号</view>
+        <view class="hero-copy">不是 MBTI 平替，是更懂周会、汇报和需求变更的工位黑话版本。</view>
+      </view>
+
+      <view class="cloud-grid">
+        <view class="cloud-chip" wx:for="{{roleHighlights}}" wx:key="*this">{{item}}</view>
+      </view>
+
+      <button class="primary-button" bindtap="startQuiz">开始暴露本性</button>
+    </view>
+
+    <view class="section-card">
+      <view class="section-title">测前声明</view>
+      <view class="bullet-row" wx:for="{{highlights}}" wx:key="*this">
+        <text class="bullet-dot"></text>
+        <text class="bullet-copy">{{item}}</text>
+      </view>
+    </view>
+
+    <view class="section-card" wx:if="{{lastResult}}">
+      <view class="section-title">你上次测出来是</view>
+      <view class="last-result-name">{{lastResult.headline}}</view>
+      <view class="last-result-subtitle">{{lastResult.subtitle}}</view>
+      <view class="section-copy">{{lastResult.shareLine}}</view>
+    </view>
+  </view>
+
+  <view class="container" wx:elif="{{stage === 'quiz'}}">
+    <view class="progress-card">
+      <view class="progress-head">
+        <view>
+          <view class="phase-badge">{{currentPhaseLabel}}</view>
+          <view class="progress-title">第 {{currentIndex + 1}} / {{totalQuestions}} 题</view>
+        </view>
+        <view class="progress-percent">{{progressPercent}}%</view>
+      </view>
+      <view class="progress-track">
+        <view class="progress-fill" style="width: {{progressPercent}}%;"></view>
+      </view>
+      <view class="progress-copy">{{answerLabel}}</view>
+    </view>
+
+    <view class="question-card" wx:if="{{currentQuestion}}">
+      <view class="question-phase">{{currentQuestion.phase === 'main' ? '职场主测试' : '风格加试'}}</view>
+      <view class="question-title">{{currentQuestion.title}}</view>
+
+      <view class="options-list">
+        <view
+          class="option-card"
+          wx:for="{{currentQuestion.options}}"
+          wx:key="key"
+          data-key="{{item.key}}"
+          bindtap="chooseOption"
+        >
+          <view class="option-key">{{item.key}}</view>
+          <view class="option-text">{{item.text}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="container" wx:elif="{{stage === 'result' && result}}">
+    <view class="result-hero">
+      <view class="result-kicker">你的工位称号</view>
+      <view class="result-title">{{result.headline}}</view>
+      <view class="result-subtitle">{{result.subtitle}}</view>
+      <view class="result-verdict">{{result.verdict}}</view>
+      <view class="poster-tag-row">
+        <view class="poster-tag" wx:for="{{result.tags}}" wx:key="*this">{{item}}</view>
+      </view>
+    </view>
+
+    <view class="poster-card">
+      <view class="poster-card-top">WORKPLACE PERSONA POSTER</view>
+      <view class="poster-role">{{result.headline}}</view>
+      <view class="poster-type">{{result.subtitle}}</view>
+      <view class="poster-facts">
+        <view class="poster-fact" wx:for="{{result.posterFacts}}" wx:key="*this">{{item}}</view>
+      </view>
+      <view class="poster-quote">{{result.shareLine}}</view>
+      <view class="poster-footer">工位人格研究所 · 截图发群，看看谁先破防</view>
+    </view>
+
+    <view class="score-grid">
+      <view class="score-card accent-orange">
+        <view class="score-label">主人格</view>
+        <view class="score-name">{{result.primary.label}}</view>
+        <view class="score-value">{{result.primary.score}} 分</view>
+      </view>
+      <view class="score-card accent-blue">
+        <view class="score-label">副人格</view>
+        <view class="score-name">{{result.secondary.label}}</view>
+        <view class="score-value">{{result.secondary.score}} 分</view>
+      </view>
+      <view class="score-card accent-green">
+        <view class="score-label">出招风格</view>
+        <view class="score-name">{{result.style.label}}</view>
+        <view class="score-value">{{result.style.score}} 分</view>
+      </view>
+    </view>
+
+    <view class="section-card">
+      <view class="section-title">你在团队里的样子</view>
+      <view class="section-copy">{{result.verdict}}</view>
+    </view>
+
+    <view class="section-card">
+      <view class="section-title">前三人格倾向</view>
+      <view class="rank-list">
+        <view class="rank-item" wx:for="{{result.topStrengthTypes}}" wx:key="key">
+          <view class="rank-order">TOP {{index + 1}}</view>
+          <view class="rank-content">
+            <view class="rank-name">{{item.label}}</view>
+            <view class="rank-meta">{{item.score}} 分 · {{item.summary}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="section-card">
+      <view class="section-title">高光技能</view>
+      <view class="bullet-row" wx:for="{{result.strengths}}" wx:key="*this">
+        <text class="bullet-dot"></text>
+        <text class="bullet-copy">{{item}}</text>
+      </view>
+    </view>
+
+    <view class="section-card">
+      <view class="section-title">隐藏雷区</view>
+      <view class="bullet-row" wx:for="{{result.risks}}" wx:key="*this">
+        <text class="bullet-dot"></text>
+        <text class="bullet-copy">{{item}}</text>
+      </view>
+    </view>
+
+    <view class="section-card">
+      <view class="section-title">适合场景</view>
+      <view class="bullet-row" wx:for="{{result.scenes}}" wx:key="*this">
+        <text class="bullet-dot"></text>
+        <text class="bullet-copy">{{item}}</text>
+      </view>
+    </view>
+
+    <view class="section-card quote-card">
+      <view class="section-title">黑话点评</view>
+      <view class="quote-copy">{{result.roast}}</view>
+    </view>
+
+    <view class="action-row">
+      <button class="secondary-button" bindtap="restartQuiz">重新测一次</button>
+      <button class="primary-button mini" bindtap="copySummary">复制结果文案</button>
+    </view>
+
+    <view class="action-row action-row-bottom">
+      <button class="secondary-button" loading="{{generatingPoster}}" bindtap="generatePoster">生成分享海报</button>
+      <button class="primary-button mini" bindtap="savePoster">保存到相册</button>
+    </view>
+
+    <view class="share-tip">微信右上角可直接分享给同事，看看谁才是会议里的隐藏 Boss。</view>
+  </view>
+
+  <view class="poster-modal" wx:if="{{posterVisible}}">
+    <view class="poster-mask" bindtap="closePoster"></view>
+    <view class="poster-modal-card">
+      <image class="poster-image" src="{{posterImage}}" mode="widthFix" bindtap="previewPoster"></image>
+      <view class="poster-modal-actions">
+        <button class="secondary-button" bindtap="closePoster">关闭预览</button>
+        <button class="primary-button mini" bindtap="savePoster">保存海报</button>
+      </view>
+    </view>
+  </view>
+
+  <canvas type="2d" id="posterCanvas" class="poster-canvas"></canvas>
+</view>

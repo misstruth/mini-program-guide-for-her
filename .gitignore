@@ -13,3 +13,13 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+
+# Local macOS / IDE / cache noise
+.DS_Store
+.idea/
+.gocache/
+
+# Local data exports
+.~*.xlsx
+10w*.txt
+10w*.xlsx
