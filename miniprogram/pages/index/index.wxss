@@ -82,6 +82,7 @@
 .score-grid,
 .poster-tag-row,
 .poster-facts,
+.poster-card-main,
 .poster-modal-actions {
   display: flex;
   flex-wrap: wrap;
@@ -167,7 +168,8 @@
 .section-card,
 .progress-card,
 .question-card,
-.score-card {
+.score-card,
+.role-visual-card {
   margin-top: 24rpx;
   padding: 26rpx;
   border-radius: 32rpx;
@@ -337,6 +339,51 @@
   box-shadow: 0 26rpx 62rpx rgba(29, 26, 62, 0.22);
 }
 
+.role-visual-card {
+  overflow: hidden;
+  background:
+    radial-gradient(circle at top right, rgba(255, 143, 91, 0.18), transparent 42%),
+    rgba(255, 251, 247, 0.94);
+}
+
+.role-visual-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 20rpx;
+  align-items: flex-start;
+}
+
+.role-visual-kicker {
+  font-size: 22rpx;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #7f779f;
+}
+
+.role-visual-title {
+  margin-top: 10rpx;
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #201d38;
+}
+
+.role-visual-badge {
+  flex-shrink: 0;
+  padding: 10rpx 16rpx;
+  border-radius: 999rpx;
+  background: #201d38;
+  color: #fff5ea;
+  font-size: 20rpx;
+}
+
+.role-visual-image {
+  width: 100%;
+  height: 760rpx;
+  margin-top: 22rpx;
+  border-radius: 28rpx;
+  background: #ece6dd;
+}
+
 .poster-card-top,
 .poster-footer {
   font-size: 22rpx;
@@ -344,8 +391,19 @@
   color: rgba(255, 244, 236, 0.72);
 }
 
-.poster-role {
+.poster-card-main {
   margin-top: 18rpx;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+}
+
+.poster-copy-block {
+  min-width: 0;
+  flex: 1;
+}
+
+.poster-role {
   font-size: 54rpx;
   line-height: 1.14;
   font-weight: 700;
@@ -359,6 +417,15 @@
 
 .poster-facts {
   margin-top: 22rpx;
+}
+
+.poster-avatar {
+  width: 188rpx;
+  height: 188rpx;
+  flex-shrink: 0;
+  border-radius: 28rpx;
+  border: 2rpx solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .poster-fact {

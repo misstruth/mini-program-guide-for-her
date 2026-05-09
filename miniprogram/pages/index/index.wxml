@@ -86,12 +86,28 @@
       </view>
     </view>
 
+    <view class="role-visual-card" wx:if="{{result.avatarImage}}">
+      <view class="role-visual-head">
+        <view>
+          <view class="role-visual-kicker">专属人格形象</view>
+          <view class="role-visual-title">#{{result.avatarIndex}} {{result.headline}}</view>
+        </view>
+        <view class="role-visual-badge">{{result.role.id}}</view>
+      </view>
+      <image class="role-visual-image" src="{{result.avatarImage}}" mode="aspectFill"></image>
+    </view>
+
     <view class="poster-card">
       <view class="poster-card-top">WORKPLACE PERSONA POSTER</view>
-      <view class="poster-role">{{result.headline}}</view>
-      <view class="poster-type">{{result.subtitle}}</view>
-      <view class="poster-facts">
-        <view class="poster-fact" wx:for="{{result.posterFacts}}" wx:key="*this">{{item}}</view>
+      <view class="poster-card-main">
+        <view class="poster-copy-block">
+          <view class="poster-role">{{result.headline}}</view>
+          <view class="poster-type">{{result.subtitle}}</view>
+          <view class="poster-facts">
+            <view class="poster-fact" wx:for="{{result.posterFacts}}" wx:key="*this">{{item}}</view>
+          </view>
+        </view>
+        <image class="poster-avatar" wx:if="{{result.avatarImage}}" src="{{result.avatarImage}}" mode="aspectFill"></image>
       </view>
       <view class="poster-quote">{{result.shareLine}}</view>
       <view class="poster-footer">工位人格研究所 · 截图发群，看看谁先破防</view>

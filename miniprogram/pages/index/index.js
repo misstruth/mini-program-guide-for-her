@@ -5,6 +5,8 @@ const {
   STYLE_QUESTIONS,
   buildResultCopy,
 } = require('../../data/quiz')
+const { buildAvatarBrief } = require('../../data/avatar-kit')
+const AVATAR_MANIFEST = require('../../data/generated/avatar-manifest-108.json')
 
 const PROGRESS_COPY = [
   '你已经击败 37% 的嘴硬同事，继续暴露本性。',
@@ -15,6 +17,7 @@ const PROGRESS_COPY = [
 ]
 
 const STORAGE_KEY = 'workplace-persona-last-result'
+const ROLE_AVATAR_MAP = buildRoleAvatarMap(AVATAR_MANIFEST.items || [])
 
 Page({
   data: {
@@ -164,6 +167,7 @@ Page({
       primary,
       secondary,
       style,
+      avatarBrief: buildAvatarBrief(primary.key, style.key, result.headline),
       rankedMain,
       rankedStyle,
       topStrengthTypes: rankedMain.slice(0, 3),
@@ -174,14 +178,15 @@ Page({
         `${secondary.label} 隐藏副人格`,
       ],
     }
+    const hydratedResult = hydrateResult(finalResult)
 
     this.setData({
       stage: 'result',
       progressPercent: 100,
-      result: finalResult,
-      lastResult: finalResult,
+      result: hydratedResult,
+      lastResult: hydratedResult,
     })
-    wx.setStorageSync(STORAGE_KEY, finalResult)
+    wx.setStorageSync(STORAGE_KEY, hydratedResult)
   },
 
   copySummary() {
@@ -287,9 +292,38 @@ Page({
       return
     }
 
-    this.setData({ lastResult })
+    this.setData({ lastResult: hydrateResult(lastResult) })
   },
 })
+
+function buildRoleAvatarMap(items) {
+  return items.reduce((acc, item) => {
+    acc[item.id] = {
+      image: `/${item.image}`,
+      prompt: item.prompt,
+      index: item.index,
+    }
+    return acc
+  }, {})
+}
+
+function hydrateResult(result) {
+  if (!result || !result.role || !result.role.id) {
+    return result
+  }
+
+  const avatarMeta = ROLE_AVATAR_MAP[result.role.id]
+  if (!avatarMeta) {
+    return result
+  }
+
+  return {
+    ...result,
+    avatarImage: avatarMeta.image,
+    avatarPrompt: avatarMeta.prompt,
+    avatarIndex: avatarMeta.index,
+  }
+}
 
 function getAllQuestions() {
   return [
