@@ -547,6 +547,7 @@
 
     .rail-card {
       background: rgba(255,255,255,0.82);
+      overflow: visible;
     }
 
     .rail-card:first-child { transform: rotate(-1.2deg); }
@@ -565,10 +566,12 @@
 
     .progress-big {
       margin-top: 14px;
-      font-size: 72px;
+      font-size: 78px;
       line-height: 0.9;
-      font-weight: 800;
+      font-weight: 900;
       color: var(--navy);
+      letter-spacing: -0.06em;
+      text-shadow: 4px 4px 0 rgba(255,255,255,0.86);
     }
 
     .progress-track {
@@ -586,12 +589,72 @@
       background: linear-gradient(90deg, var(--tomato), var(--yellow));
     }
 
+    .meter-note {
+      margin-top: 18px;
+      padding: 14px 16px;
+      border-radius: 20px;
+      background: linear-gradient(180deg, rgba(255, 248, 239, 0.98), rgba(255, 230, 198, 0.98));
+      border: 2px dashed rgba(24,32,51,0.14);
+      box-shadow: 0 14px 26px rgba(29,43,83,0.08);
+      transform: rotate(2deg);
+    }
+
+    .meter-note strong,
+    .result-stamp strong,
+    .question-note strong {
+      display: block;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(24,32,51,0.46);
+    }
+
+    .meter-note span,
+    .result-stamp span,
+    .question-note span {
+      display: block;
+      margin-top: 8px;
+      font-size: 15px;
+      line-height: 1.72;
+      color: var(--ink);
+    }
+
     .question-panel {
       min-height: 700px;
+      padding-bottom: 32px;
+      isolation: isolate;
       background:
-        radial-gradient(circle at 92% 14%, rgba(255, 228, 122, 0.2), transparent 18%),
-        linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,247,238,0.92));
+        radial-gradient(circle at 92% 14%, rgba(255, 228, 122, 0.26), transparent 18%),
+        radial-gradient(circle at 10% 88%, rgba(158, 240, 217, 0.24), transparent 20%),
+        linear-gradient(180deg, rgba(255,255,255,0.94), rgba(255,247,238,0.96));
       transform: rotate(-0.3deg);
+    }
+
+    .question-panel::before {
+      content: "HOT";
+      position: absolute;
+      right: 26px;
+      top: 86px;
+      font-size: clamp(76px, 10vw, 124px);
+      line-height: 0.9;
+      font-weight: 900;
+      letter-spacing: -0.08em;
+      color: rgba(255, 111, 77, 0.13);
+      z-index: -1;
+      transform: rotate(-8deg);
+    }
+
+    .question-panel::after {
+      content: "";
+      position: absolute;
+      right: 38px;
+      top: 28px;
+      width: 102px;
+      height: 34px;
+      border-radius: 10px;
+      background: rgba(158, 240, 217, 0.6);
+      transform: rotate(10deg);
+      box-shadow: 0 8px 18px rgba(29,43,83,0.08);
     }
 
     .question-head {
@@ -602,29 +665,76 @@
     }
 
     .phase-chip {
-      padding: 10px 14px;
-      border-radius: 16px;
-      background: rgba(24,32,51,0.06);
+      padding: 10px 16px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.9);
+      border: 1px solid rgba(24,32,51,0.08);
       color: var(--navy);
       font-size: 12px;
       letter-spacing: 0.16em;
       text-transform: uppercase;
-      transform: rotate(-2deg);
+      transform: rotate(-4deg);
+      box-shadow: 0 10px 22px rgba(29,43,83,0.08);
     }
 
     .question-title {
       margin-top: 18px;
-      font-size: clamp(34px, 4.6vw, 54px);
-      line-height: 1.08;
-      letter-spacing: -0.04em;
-      font-weight: 800;
-      max-width: 900px;
+      font-size: clamp(40px, 5vw, 70px);
+      line-height: 0.98;
+      letter-spacing: -0.06em;
+      font-weight: 900;
+      max-width: 820px;
+      text-wrap: balance;
+    }
+
+    .question-subtitle {
+      max-width: 680px;
+      margin-top: 14px;
+      font-size: 16px;
+      line-height: 1.8;
+      color: #4b536a;
+    }
+
+    .question-meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 18px;
+      align-items: stretch;
+    }
+
+    .question-chip,
+    .question-note {
+      border-radius: 20px;
+      border: 1px solid rgba(24,32,51,0.08);
+      box-shadow: 0 8px 18px rgba(29,43,83,0.05);
+      background: #fffdf8;
+    }
+
+    .question-chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 13px 18px;
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--ink);
+      font-weight: 700;
+    }
+
+    .question-chip:nth-child(1) { transform: rotate(-2deg); background: rgba(255, 228, 122, 0.5); }
+    .question-chip:nth-child(2) { transform: rotate(1.3deg); background: rgba(158, 240, 217, 0.5); }
+
+    .question-note {
+      max-width: 340px;
+      padding: 14px 18px;
+      transform: rotate(2.4deg);
+      background: linear-gradient(180deg, rgba(255, 253, 248, 0.96), rgba(255, 240, 226, 0.95));
     }
 
     .option-list {
       display: grid;
-      gap: 14px;
-      margin-top: 26px;
+      gap: 16px;
+      margin-top: 28px;
     }
 
     .option {
@@ -637,32 +747,49 @@
     }
 
     .option-shell {
+      position: relative;
       display: grid;
       grid-template-columns: 62px 1fr;
       gap: 16px;
       align-items: start;
-      padding: 18px;
-      border-radius: 24px;
-      background: #fffdf8;
+      padding: 18px 20px 18px 18px;
+      border-radius: 28px;
+      background: linear-gradient(180deg, #fffdf8, #fff6ee);
       border: 1px solid rgba(24,32,51,0.08);
-      box-shadow: 0 8px 18px rgba(29,43,83,0.05);
+      box-shadow: 0 16px 26px rgba(29,43,83,0.07);
       transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
+      overflow: hidden;
     }
 
-    .option:nth-child(odd) .option-shell { transform: rotate(-0.7deg); }
-    .option:nth-child(even) .option-shell { transform: rotate(0.7deg); }
+    .option:nth-child(1) .option-shell { transform: rotate(-1.4deg); }
+    .option:nth-child(2) .option-shell { transform: rotate(1.1deg); }
+    .option:nth-child(3) .option-shell { transform: rotate(-0.5deg); }
+    .option:nth-child(4) .option-shell { transform: rotate(1.6deg); }
 
     .option:hover .option-shell {
-      transform: translateX(6px) rotate(0deg);
+      transform: translateX(10px) translateY(-2px) rotate(0deg) scale(1.01);
       background: #fffaf4;
-      box-shadow: 0 14px 28px rgba(29,43,83,0.1);
+      box-shadow: 0 20px 34px rgba(29,43,83,0.12);
+    }
+
+    .option-shell::after {
+      content: "";
+      position: absolute;
+      right: -8px;
+      top: 16px;
+      width: 58px;
+      height: 18px;
+      border-radius: 8px;
+      background: color-mix(in srgb, var(--accent, var(--yellow)) 72%, white);
+      opacity: 0.92;
+      transform: rotate(18deg);
     }
 
     .option-key {
       width: 62px;
       height: 62px;
-      border-radius: 20px;
-      background: linear-gradient(135deg, var(--navy), #3650a2);
+      border-radius: 22px;
+      background: linear-gradient(135deg, var(--navy), var(--accent, var(--blue)));
       color: #fffdf8;
       display: flex;
       align-items: center;
@@ -673,38 +800,52 @@
 
     .option-text {
       margin-top: 0;
-      color: #3a4258;
-      font-size: 16px;
+      color: #2d344a;
+      font-size: 17px;
+      line-height: 1.62;
+      font-weight: 800;
+    }
+
+    .option-vibe {
+      margin-top: 8px;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(24,32,51,0.48);
     }
 
     .result-hero {
       padding: 28px;
+      isolation: isolate;
       background:
-        radial-gradient(circle at 84% 18%, rgba(255, 228, 122, 0.3), transparent 20%),
-        linear-gradient(150deg, #1d2b53 0%, #2d3f74 52%, #3f59a4 100%);
+        radial-gradient(circle at 84% 18%, rgba(255, 228, 122, 0.38), transparent 20%),
+        radial-gradient(circle at 18% 88%, rgba(158, 240, 217, 0.18), transparent 22%),
+        linear-gradient(150deg, #172447 0%, #24376f 52%, #3653aa 100%);
       color: #fffdf8;
-      transform: rotate(0.4deg);
+      transform: rotate(0.6deg);
     }
 
     .result-hero::after {
-      content: "WOW";
+      content: "SLAY";
       position: absolute;
-      right: 22px;
-      top: 16px;
-      font-size: 86px;
+      right: 18px;
+      top: 20px;
+      font-size: clamp(92px, 10vw, 138px);
       font-weight: 900;
       letter-spacing: -0.08em;
-      color: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.09);
       pointer-events: none;
+      z-index: -1;
     }
 
     .result-title {
       margin-top: 16px;
-      font-size: clamp(44px, 5.4vw, 76px);
-      line-height: 0.92;
+      font-size: clamp(52px, 6.2vw, 96px);
+      line-height: 0.88;
       font-weight: 900;
       letter-spacing: -0.06em;
-      max-width: 520px;
+      max-width: 560px;
+      text-shadow: 4px 4px 0 rgba(255, 111, 77, 0.24);
     }
 
     .result-subtitle {
@@ -733,10 +874,82 @@
     .share-card {
       margin-top: 18px;
       padding: 18px;
-      border-radius: 22px;
-      background: rgba(255,255,255,0.8);
-      border: 1px dashed rgba(24,32,51,0.14);
-      transform: rotate(1deg);
+      border-radius: 24px;
+      background: rgba(255,255,255,0.88);
+      border: 2px dashed rgba(24,32,51,0.16);
+      transform: rotate(1.8deg);
+      box-shadow: 0 14px 28px rgba(15, 24, 46, 0.14);
+    }
+
+    .result-stamp-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .result-stamp {
+      min-width: 148px;
+      padding: 14px 16px;
+      border-radius: 24px;
+      border: 1px solid rgba(24,32,51,0.1);
+      box-shadow: 0 14px 26px rgba(29,43,83,0.1);
+      color: var(--ink);
+    }
+
+    .result-stamp:nth-child(1) { background: rgba(255, 228, 122, 0.86); transform: rotate(-2deg); }
+    .result-stamp:nth-child(2) { background: rgba(158, 240, 217, 0.9); transform: rotate(1.6deg); }
+    .result-stamp:nth-child(3) { background: rgba(255, 213, 188, 0.92); transform: rotate(-1deg); }
+
+    .visual-card {
+      margin-top: 18px;
+      padding: 18px;
+      border-radius: 28px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,244,234,0.94));
+      border: 1px solid rgba(24,32,51,0.08);
+      box-shadow: 0 16px 28px rgba(29,43,83,0.08);
+    }
+
+    .visual-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .visual-kicker {
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(24,32,51,0.5);
+    }
+
+    .visual-title {
+      margin-top: 8px;
+      font-size: 28px;
+      line-height: 1.1;
+      font-weight: 900;
+      color: var(--ink);
+    }
+
+    .visual-badge {
+      flex-shrink: 0;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: var(--navy);
+      color: #fffdf8;
+      font-size: 12px;
+      letter-spacing: 0.06em;
+    }
+
+    .visual-image {
+      width: 100%;
+      margin-top: 16px;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      border-radius: 24px;
+      background: rgba(24,32,51,0.08);
+      border: 1px solid rgba(24,32,51,0.08);
     }
 
     .score-row,
@@ -747,7 +960,7 @@
     .score-card {
       flex: 1;
       min-width: 180px;
-      background: rgba(255,255,255,0.82);
+      background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,245,235,0.9));
     }
 
     .score-card:nth-child(1) { transform: rotate(-0.6deg); }
@@ -756,8 +969,8 @@
 
     .score-name {
       margin-top: 10px;
-      font-size: 26px;
-      font-weight: 800;
+      font-size: 30px;
+      font-weight: 900;
       color: var(--ink);
     }
 
@@ -771,10 +984,10 @@
       flex: 1;
       min-width: 210px;
       padding: 18px;
-      border-radius: 24px;
-      background: #fffdf8;
+      border-radius: 26px;
+      background: linear-gradient(180deg, #fffdf8, #fff4e7);
       border: 1px solid rgba(24,32,51,0.08);
-      box-shadow: 0 8px 18px rgba(29,43,83,0.05);
+      box-shadow: 0 14px 26px rgba(29,43,83,0.08);
     }
 
     .top-item:nth-child(1) { transform: rotate(-1deg); }
@@ -783,8 +996,8 @@
 
     .top-name {
       margin-top: 10px;
-      font-size: 22px;
-      font-weight: 800;
+      font-size: 26px;
+      font-weight: 900;
     }
 
     .top-copy { margin-top: 8px; }
@@ -796,7 +1009,7 @@
     }
 
     .list-card {
-      background: rgba(255,255,255,0.82);
+      background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,246,238,0.92));
     }
 
     .list-card:nth-child(odd) { transform: rotate(-0.3deg); }
@@ -808,6 +1021,10 @@
       color: #3b4257;
       line-height: 1.9;
       font-size: 15px;
+    }
+
+    .list-card li + li {
+      margin-top: 8px;
     }
 
     .roast {
@@ -827,6 +1044,10 @@
         position: static;
         width: auto;
         margin-top: 24px;
+      }
+
+      .question-note {
+        max-width: none;
       }
 
       .rail {
@@ -866,6 +1087,10 @@
       .role-cloud,
       .story-grid {
         grid-template-columns: 1fr;
+      }
+
+      .question-meta-row {
+        flex-direction: column;
       }
     }
   </style>
@@ -924,7 +1149,10 @@
           <div class="progress-track">
             <div id="progressFill" class="progress-fill"></div>
           </div>
-          <div id="progressCopy" class="meta-copy" style="margin-top:16px;"></div>
+          <div class="meter-note">
+            <strong>status note</strong>
+            <span id="progressCopy"></span>
+          </div>
         </div>
 
         <div class="panel rail-card">
@@ -937,9 +1165,18 @@
       <div class="panel question-panel">
         <div class="question-head">
           <div class="question-kicker">pick the one that feels painfully true</div>
-          <div class="phase-chip">single choice</div>
+          <div id="phaseChip" class="phase-chip">single choice</div>
         </div>
         <h2 id="questionTitle" class="question-title"></h2>
+        <div id="questionSubtitle" class="question-subtitle"></div>
+        <div class="question-meta-row">
+          <div id="questionMood" class="question-chip"></div>
+          <div id="questionReality" class="question-chip"></div>
+          <div class="question-note">
+            <strong>truth detector</strong>
+            <span id="questionTip"></span>
+          </div>
+        </div>
         <div id="optionList" class="option-list"></div>
       </div>
     </section>
@@ -952,6 +1189,7 @@
           <div id="resultSubtitle" class="result-subtitle"></div>
           <div id="resultVerdict" class="result-verdict"></div>
           <div id="resultTags" class="tag-row"></div>
+          <div id="resultStampRow" class="result-stamp-row"></div>
 
           <div class="share-card">
             <div class="rail-kicker">share this line</div>
@@ -961,6 +1199,17 @@
       </aside>
 
       <div>
+        <div id="resultVisualCard" class="visual-card hidden">
+          <div class="visual-head">
+            <div>
+              <div class="visual-kicker">persona visual</div>
+              <div id="visualTitle" class="visual-title"></div>
+            </div>
+            <div id="visualBadge" class="visual-badge"></div>
+          </div>
+          <img id="visualImage" class="visual-image" alt="角色形象">
+        </div>
+
         <div id="scoreRow" class="score-row"></div>
         <div id="topList" class="top-row"></div>
 
@@ -992,6 +1241,7 @@
   </main>
 
   <script>
+    const AVATAR_MANIFEST_URL = '/miniprogram/data/generated/avatar-manifest-108.json';
     const PROGRESS_COPY = [
       '你已经击败 37% 的嘴硬同事，继续暴露本性。',
       '别慌，测出来不是有病，只是有工龄。',
@@ -999,6 +1249,33 @@
       '你的工位灵魂正在加载，请继续提交证词。',
       '再坚持一下，职场宇宙快把你归类了。'
     ];
+
+    const QUESTION_TIPS = [
+      '选那个你会在真实群聊里发出来的，不是年终述职里会说出来的。',
+      '如果四个选项都像你，挑那个最容易让同事翻你白眼的。',
+      '别端着。这个测试靠的不是体面，是工位现场感。',
+      '你不是在答题，你是在给自己的工作习惯留下口供。',
+      '最像你的那个选项，往往也是你最想嘴硬否认的那个。'
+    ];
+
+    const OPTION_VIBES = ['工位本能', '群聊现场', '会后真相', '情绪实录'];
+
+    const PHASE_META = {
+      main: {
+        label: '主测雷达',
+        chip: 'main round',
+        subtitle: '先抓你真正的做事驱动力，看看你是在推事、拆事、接事，还是先看穿这事到底值不值得做。',
+        mood: '现在测的是：你怎么出手',
+        reality: '工位实况：请按真实反应作答'
+      },
+      style: {
+        label: '风格加试',
+        chip: 'style round',
+        subtitle: '主人格差不多现形了，接下来补抓你的手感和气场，看你是猛冲型、接住型，还是暗中带动型。',
+        mood: '现在测的是：你怎么发力',
+        reality: '工位实况：越不修饰，越像本人'
+      }
+    };
 
     const MAIN_TYPES = [
       { key: '推进', label: '推进者', summary: '项目不动时，你就是那个先把第一脚油门踩下去的人。' },
@@ -1113,22 +1390,34 @@
       index: 0,
       mainScore: emptyScore(MAIN_TYPES),
       styleScore: emptyScore(STYLE_TYPES),
-      lastText: ''
+      lastText: '',
+      avatarMap: {},
+      currentResult: null
     };
 
     const landingEl = document.getElementById('landing');
     const quizEl = document.getElementById('quiz');
     const resultEl = document.getElementById('result');
+    const resultVisualCardEl = document.getElementById('resultVisualCard');
+    const visualTitleEl = document.getElementById('visualTitle');
+    const visualBadgeEl = document.getElementById('visualBadge');
+    const visualImageEl = document.getElementById('visualImage');
     const phaseLabelEl = document.getElementById('phaseLabel');
     const progressTextEl = document.getElementById('progressText');
     const progressCopyEl = document.getElementById('progressCopy');
     const progressFillEl = document.getElementById('progressFill');
+    const phaseChipEl = document.getElementById('phaseChip');
     const questionTitleEl = document.getElementById('questionTitle');
+    const questionSubtitleEl = document.getElementById('questionSubtitle');
+    const questionMoodEl = document.getElementById('questionMood');
+    const questionRealityEl = document.getElementById('questionReality');
+    const questionTipEl = document.getElementById('questionTip');
     const optionListEl = document.getElementById('optionList');
 
     document.getElementById('startBtn').addEventListener('click', startQuiz);
     document.getElementById('restartBtn').addEventListener('click', startQuiz);
     document.getElementById('copyBtn').addEventListener('click', copyResult);
+    preloadAvatarManifest();
 
     function q(id, title, options) { return { id, title, options }; }
     function o(key, text, scoreKey) { return { key, text, scoreKey }; }
@@ -1150,6 +1439,7 @@
     }
 
     function startQuiz() {
+      state.currentResult = null;
       state.index = 0;
       state.mainScore = emptyScore(MAIN_TYPES);
       state.styleScore = emptyScore(STYLE_TYPES);
@@ -1167,20 +1457,30 @@
     function renderQuestion() {
       const current = state.queue[state.index];
       const percent = Math.round((state.index / state.queue.length) * 100);
-      phaseLabelEl.textContent = current.phase === 'main' ? '主测' : '加试';
+      const phaseMeta = PHASE_META[current.phase];
+      phaseLabelEl.textContent = phaseMeta.label;
+      phaseChipEl.textContent = phaseMeta.chip;
       progressTextEl.textContent = `第 ${state.index + 1} / ${state.queue.length} 题`;
       progressCopyEl.textContent = PROGRESS_COPY[state.index % PROGRESS_COPY.length];
       progressFillEl.style.width = `${percent}%`;
       questionTitleEl.textContent = current.title;
+      questionSubtitleEl.textContent = phaseMeta.subtitle;
+      questionMoodEl.textContent = phaseMeta.mood;
+      questionRealityEl.textContent = phaseMeta.reality;
+      questionTipEl.textContent = QUESTION_TIPS[state.index % QUESTION_TIPS.length];
       optionListEl.innerHTML = '';
 
-      current.options.forEach(option => {
+      current.options.forEach((option, optionIndex) => {
         const button = document.createElement('button');
         button.className = 'option';
+        const accent = ['#ffe47a', '#9ef0d9', '#ffb883', '#8faeff'][optionIndex % 4];
         button.innerHTML = `
-          <div class="option-shell">
+          <div class="option-shell" style="--accent:${accent};">
             <div class="option-key">${option.key}</div>
-            <div class="option-text">${option.text}</div>
+            <div>
+              <div class="option-text">${option.text}</div>
+              <div class="option-vibe">${OPTION_VIBES[optionIndex % OPTION_VIBES.length]}</div>
+            </div>
           </div>
         `;
         button.addEventListener('click', () => chooseOption(option));
@@ -1222,9 +1522,11 @@
       const detail = MAIN_DETAILS[primary.key];
       const styleMeta = STYLE_TYPES[styleIndex];
       const roleName = ROLE_NAME_MAP[primary.key][styleIndex];
+      const roleId = `${primary.key}-${style.key}`;
       const verdict = `${detail.aura}${style.label}的你，${styleMeta.flair}。`;
       const tags = [...detail.strengths.slice(0, 2), ...styleMeta.tags];
       const shareLine = `我是 ${roleName}，表面 ${primary.label}，骨子里还藏着 ${secondary.label}。`;
+      state.currentResult = { roleId, roleName, subtitle: `${primary.label} x ${style.label}` };
 
       quizEl.classList.add('hidden');
       resultEl.classList.remove('hidden');
@@ -1233,6 +1535,12 @@
       document.getElementById('resultSubtitle').textContent = `${primary.label} x ${style.label}`;
       document.getElementById('resultVerdict').textContent = verdict;
       document.getElementById('resultTags').innerHTML = tags.map(tag => `<span class="result-tag">${tag}</span>`).join('');
+      document.getElementById('resultStampRow').innerHTML = [
+        resultStamp('工位代号', roleName),
+        resultStamp('场上手感', `${style.label}模式已上线`),
+        resultStamp('同事观感', detail.roast)
+      ].join('');
+      renderResultVisual(roleId, roleName, `${primary.label} x ${style.label}`);
       document.getElementById('shareCopy').textContent = shareLine;
 
       document.getElementById('scoreRow').innerHTML = [
@@ -1271,12 +1579,53 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    async function preloadAvatarManifest() {
+      try {
+        const response = await fetch(AVATAR_MANIFEST_URL);
+        if (!response.ok) return;
+        const payload = await response.json();
+        state.avatarMap = (payload.items || []).reduce((acc, item) => {
+          acc[item.id] = item;
+          return acc;
+        }, {});
+
+        if (state.currentResult) {
+          renderResultVisual(state.currentResult.roleId, state.currentResult.roleName, state.currentResult.subtitle);
+        }
+      } catch (error) {
+        console.warn('avatar manifest load failed', error);
+      }
+    }
+
+    function renderResultVisual(roleId, roleName, subtitle) {
+      const avatar = state.avatarMap[roleId];
+      if (!avatar) {
+        resultVisualCardEl.classList.add('hidden');
+        return;
+      }
+
+      visualTitleEl.textContent = `#${avatar.index} ${roleName}`;
+      visualBadgeEl.textContent = roleId;
+      visualImageEl.src = `/${avatar.image}`;
+      visualImageEl.alt = `${roleName} 角色形象`;
+      resultVisualCardEl.classList.remove('hidden');
+    }
+
     function scoreCard(label, name, value) {
       return `
         <div class="panel score-card">
           <div class="score-label">${label}</div>
           <div class="score-name">${name}</div>
           <div class="score-value">${value}</div>
+        </div>
+      `;
+    }
+
+    function resultStamp(label, value) {
+      return `
+        <div class="result-stamp">
+          <strong>${label}</strong>
+          <span>${value}</span>
         </div>
       `;
     }

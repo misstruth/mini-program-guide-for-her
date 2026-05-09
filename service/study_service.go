@@ -527,6 +527,11 @@ func (r *memoryStudyRepository) DeleteNote(id uint) error {
 const timeLayout = "2006-01-02 15:04"
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/" {
+		http.NotFound(w, r)
+		return
+	}
+
 	data, err := os.ReadFile("./index.html")
 	if err != nil {
 		http.Error(w, "内部错误", http.StatusInternalServerError)

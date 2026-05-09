@@ -21,6 +21,7 @@ func main() {
 		log.Printf("mysql env not set, using memory store")
 	}
 
+	http.Handle("/miniprogram/", http.StripPrefix("/miniprogram/", http.FileServer(http.Dir("./miniprogram/"))))
 	http.HandleFunc("/", service.HomeHandler)
 	http.HandleFunc("/api/dashboard", service.StudyDashboardHandler)
 	http.HandleFunc("/api/tasks", service.StudyTaskListHandler)
