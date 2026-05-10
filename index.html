@@ -40,6 +40,50 @@
       overflow-x: hidden;
     }
 
+    body.mode-quiz .shell {
+      width: min(1260px, calc(100vw - 18px));
+      padding-top: 8px;
+      padding-bottom: 16px;
+    }
+
+    body.mode-quiz .topline {
+      margin-bottom: 10px;
+      font-size: 11px;
+    }
+
+    body.mode-quiz .brand-chip {
+      padding: 9px 14px;
+    }
+
+    body.mode-quiz .brand-dots {
+      width: 10px;
+      height: 10px;
+      margin-right: 32px;
+      box-shadow: 16px 0 0 var(--yellow), 32px 0 0 var(--mint);
+    }
+
+    body.mode-result .shell {
+      width: min(1260px, calc(100vw - 18px));
+      padding-top: 8px;
+      padding-bottom: 12px;
+    }
+
+    body.mode-result .topline {
+      margin-bottom: 10px;
+      font-size: 11px;
+    }
+
+    body.mode-result .brand-chip {
+      padding: 9px 14px;
+    }
+
+    body.mode-result .brand-dots {
+      width: 10px;
+      height: 10px;
+      margin-right: 32px;
+      box-shadow: 16px 0 0 var(--yellow), 32px 0 0 var(--mint);
+    }
+
     body::before {
       content: "";
       position: fixed;
@@ -538,6 +582,11 @@
       align-items: start;
     }
 
+    .quiz-grid {
+      grid-template-columns: 1fr;
+      min-height: calc(100vh - 96px);
+    }
+
     .rail {
       position: sticky;
       top: 18px;
@@ -565,18 +614,18 @@
     }
 
     .progress-big {
-      margin-top: 14px;
-      font-size: 78px;
-      line-height: 0.9;
+      margin-top: 6px;
+      font-size: 38px;
+      line-height: 1;
       font-weight: 900;
-      color: var(--navy);
+      color: #fffdf8;
       letter-spacing: -0.06em;
-      text-shadow: 4px 4px 0 rgba(255,255,255,0.86);
+      text-shadow: none;
     }
 
     .progress-track {
-      margin-top: 16px;
-      height: 14px;
+      margin-top: 8px;
+      height: 8px;
       border-radius: 999px;
       background: rgba(24,32,51,0.08);
       overflow: hidden;
@@ -620,117 +669,179 @@
     }
 
     .question-panel {
-      min-height: 700px;
-      padding-bottom: 32px;
+      min-height: calc(100vh - 76px);
+      max-height: calc(100vh - 76px);
+      padding: 18px 20px 18px;
       isolation: isolate;
       background:
-        radial-gradient(circle at 88% 16%, rgba(255, 228, 122, 0.32), transparent 20%),
-        radial-gradient(circle at 12% 88%, rgba(158, 240, 217, 0.2), transparent 18%),
-        linear-gradient(155deg, #1d2b53 0%, #27386a 42%, #2e3e74 100%);
+        radial-gradient(circle at 88% 16%, rgba(255, 228, 122, 0.16), transparent 18%),
+        radial-gradient(circle at 12% 88%, rgba(158, 240, 217, 0.12), transparent 18%),
+        linear-gradient(160deg, #1b2950 0%, #223463 45%, #2a3d73 100%);
       color: #fffdf8;
-      transform: rotate(-0.3deg);
+      transform: none;
+      display: grid;
+      grid-template-rows: auto auto 1fr;
+      overflow: hidden;
     }
 
     .question-panel::before {
-      content: "SPICY";
+      content: "";
       position: absolute;
-      right: 26px;
-      top: 86px;
-      font-size: clamp(76px, 10vw, 124px);
-      line-height: 0.9;
-      font-weight: 900;
-      letter-spacing: -0.08em;
-      color: rgba(255, 255, 255, 0.08);
+      inset: auto 18px 18px auto;
+      width: 180px;
+      height: 180px;
+      border-radius: 999px;
+      border: 1px dashed rgba(255,255,255,0.12);
       z-index: -1;
-      transform: rotate(-8deg);
     }
 
     .question-panel::after {
       content: "";
       position: absolute;
-      right: 38px;
-      top: 28px;
-      width: 102px;
-      height: 34px;
-      border-radius: 10px;
-      background: rgba(158, 240, 217, 0.6);
-      transform: rotate(10deg);
-      box-shadow: 0 8px 18px rgba(29,43,83,0.08);
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), transparent 28%);
+      pointer-events: none;
     }
 
     .question-head {
       display: flex;
       justify-content: space-between;
-      gap: 16px;
+      gap: 10px;
       align-items: start;
     }
 
-    .phase-chip {
-      padding: 10px 16px;
+    .question-top-stack {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(250px, 312px);
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .question-progress-card {
+      padding: 14px 16px;
       border-radius: 18px;
-      background: rgba(255,255,255,0.14);
+      background: linear-gradient(180deg, rgba(255,255,255,0.11), rgba(255,255,255,0.06));
       border: 1px solid rgba(255,255,255,0.12);
-      color: #fff8f0;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+    }
+
+    .question-progress-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .question-progress-copy {
+      margin-top: 6px;
+      color: rgba(255,248,241,0.94);
       font-size: 12px;
+      line-height: 1.45;
+      font-weight: 700;
+    }
+
+    .question-progress-card .rail-kicker {
+      color: rgba(255,248,241,0.58);
+    }
+
+    .question-progress-card .meta-copy {
+      margin-top: 2px;
+      color: rgba(255,248,241,0.66);
+      font-size: 13px;
+      line-height: 1.2;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .question-reminder {
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+      transform: none;
+    }
+
+    .question-reminder-title {
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,248,241,0.54);
+    }
+
+    .question-reminder-copy {
+      margin-top: 6px;
+      color: rgba(255,248,241,0.88);
+      font-size: 12px;
+      line-height: 1.42;
+    }
+
+    .phase-chip {
+      padding: 6px 11px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #fff8f0;
+      font-size: 10px;
       letter-spacing: 0.16em;
       text-transform: uppercase;
-      transform: rotate(-4deg);
-      box-shadow: 0 10px 22px rgba(29,43,83,0.08);
+      transform: none;
+      box-shadow: none;
     }
 
     .question-title {
-      margin-top: 18px;
-      font-size: clamp(40px, 5vw, 70px);
+      margin-top: 4px;
+      font-size: clamp(22px, 2.4vw, 32px);
       line-height: 0.98;
       letter-spacing: -0.06em;
       font-weight: 900;
-      max-width: 820px;
+      max-width: 920px;
       text-wrap: balance;
       color: #fffdf8;
     }
 
     .question-subtitle {
-      max-width: 680px;
-      margin-top: 14px;
-      font-size: 16px;
-      line-height: 1.8;
+      max-width: 860px;
+      margin-top: 4px;
+      font-size: 12px;
+      line-height: 1.34;
       color: rgba(255, 246, 238, 0.74);
     }
 
     .question-meta-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 18px;
+      gap: 8px;
+      margin-top: 10px;
       align-items: stretch;
     }
 
     .question-chip,
     .question-note {
-      border-radius: 20px;
-      border: 1px solid rgba(255,255,255,0.12);
-      box-shadow: 0 8px 18px rgba(14, 20, 44, 0.22);
-      background: rgba(255,255,255,0.1);
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: none;
+      background: rgba(255,255,255,0.08);
     }
 
     .question-chip {
       display: inline-flex;
       align-items: center;
-      padding: 13px 18px;
-      font-size: 13px;
-      line-height: 1.5;
+      padding: 8px 12px;
+      font-size: 10px;
+      line-height: 1.25;
       color: #fff8f0;
       font-weight: 700;
     }
 
-    .question-chip:nth-child(1) { transform: rotate(-2deg); background: rgba(255, 228, 122, 0.24); }
-    .question-chip:nth-child(2) { transform: rotate(1.3deg); background: rgba(158, 240, 217, 0.18); }
+    .question-chip:nth-child(1) { transform: none; background: rgba(255, 228, 122, 0.18); }
+    .question-chip:nth-child(2) { transform: none; background: rgba(158, 240, 217, 0.14); }
 
     .question-note {
-      max-width: 340px;
-      padding: 14px 18px;
-      transform: rotate(2.4deg);
-      background: linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0.08));
+      max-width: 320px;
+      padding: 8px 12px;
+      transform: none;
+      background: rgba(255,255,255,0.08);
     }
 
     .question-kicker {
@@ -739,16 +850,23 @@
 
     .question-note strong {
       color: rgba(255,248,241,0.54);
+      font-size: 10px;
     }
 
     .question-note span {
       color: rgba(255,248,241,0.9);
+      margin-top: 4px;
+      font-size: 11px;
+      line-height: 1.3;
     }
 
     .option-list {
       display: grid;
-      gap: 16px;
-      margin-top: 28px;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 12px;
+      align-content: start;
+      grid-auto-rows: 1fr;
     }
 
     .option {
@@ -763,164 +881,194 @@
     .option-shell {
       position: relative;
       display: grid;
-      grid-template-columns: 62px 1fr;
-      gap: 16px;
-      align-items: start;
-      padding: 18px 20px 18px 18px;
-      border-radius: 28px;
-      background: linear-gradient(180deg, #fffdf8, #fff6ee);
+      grid-template-columns: 40px 1fr;
+      gap: 10px;
+      align-items: center;
+      padding: 12px 14px 12px 12px;
+      border-radius: 16px;
+      background: linear-gradient(180deg, rgba(255,253,248,0.98), rgba(255,247,240,0.98));
       border: 1px solid rgba(24,32,51,0.08);
-      box-shadow: 0 16px 26px rgba(29,43,83,0.07);
-      transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
+      box-shadow: 0 8px 20px rgba(16, 22, 44, 0.08);
+      transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
       overflow: hidden;
     }
 
-    .option:nth-child(1) .option-shell { transform: rotate(-1.4deg); }
-    .option:nth-child(2) .option-shell { transform: rotate(1.1deg); }
-    .option:nth-child(3) .option-shell { transform: rotate(-0.5deg); }
-    .option:nth-child(4) .option-shell { transform: rotate(1.6deg); }
+    .option:nth-child(1) .option-shell,
+    .option:nth-child(2) .option-shell,
+    .option:nth-child(3) .option-shell,
+    .option:nth-child(4) .option-shell { transform: none; }
 
     .option:hover .option-shell {
-      transform: translateX(10px) translateY(-2px) rotate(0deg) scale(1.01);
-      background: #fffaf4;
-      box-shadow: 0 20px 34px rgba(29,43,83,0.12);
+      transform: translateY(-2px);
+      border-color: rgba(78,123,255,0.24);
+      box-shadow: 0 14px 28px rgba(29,43,83,0.12);
     }
 
     .option-shell::after {
       content: "";
       position: absolute;
-      right: -8px;
-      top: 16px;
-      width: 58px;
-      height: 18px;
-      border-radius: 8px;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 4px;
+      border-radius: 16px 16px 0 0;
       background: color-mix(in srgb, var(--accent, var(--yellow)) 72%, white);
       opacity: 0.92;
-      transform: rotate(18deg);
+      transform: none;
     }
 
     .option-key {
-      width: 62px;
-      height: 62px;
-      border-radius: 22px;
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
       background: linear-gradient(135deg, var(--navy), var(--accent, var(--blue)));
       color: #fffdf8;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 30px;
+      font-size: 16px;
       font-weight: 800;
     }
 
     .option-text {
       margin-top: 0;
       color: #2d344a;
-      font-size: 17px;
-      line-height: 1.62;
+      font-size: 13px;
+      line-height: 1.28;
       font-weight: 800;
     }
 
     .option-vibe {
-      margin-top: 8px;
-      font-size: 12px;
+      margin-top: 3px;
+      font-size: 9.5px;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: rgba(24,32,51,0.48);
+      color: rgba(24,32,51,0.42);
     }
 
     .result-hero {
-      padding: 28px;
+      padding: 24px;
       isolation: isolate;
       background:
-        radial-gradient(circle at 84% 18%, rgba(255, 228, 122, 0.38), transparent 20%),
-        radial-gradient(circle at 18% 88%, rgba(158, 240, 217, 0.18), transparent 22%),
-        linear-gradient(150deg, #172447 0%, #24376f 52%, #3653aa 100%);
+        radial-gradient(circle at 84% 18%, rgba(255, 228, 122, 0.18), transparent 20%),
+        radial-gradient(circle at 18% 88%, rgba(158, 240, 217, 0.1), transparent 22%),
+        linear-gradient(155deg, #1a274c 0%, #223260 52%, #2b3b6e 100%);
       color: #fffdf8;
-      transform: rotate(0.6deg);
+      border-radius: 26px;
+      min-height: 100%;
+      display: grid;
+      grid-template-rows: auto auto auto auto 1fr;
     }
 
     .result-hero::after {
-      content: "SLAY";
+      content: "";
       position: absolute;
       right: 18px;
-      top: 20px;
-      font-size: clamp(92px, 10vw, 138px);
-      font-weight: 900;
-      letter-spacing: -0.08em;
-      color: rgba(255,255,255,0.09);
+      top: 18px;
+      width: 160px;
+      height: 160px;
+      border-radius: 999px;
+      border: 1px dashed rgba(255,255,255,0.12);
       pointer-events: none;
       z-index: -1;
     }
 
     .result-title {
-      margin-top: 16px;
-      font-size: clamp(52px, 6.2vw, 96px);
-      line-height: 0.88;
+      margin-top: 10px;
+      font-size: clamp(42px, 4.8vw, 74px);
+      line-height: 0.9;
       font-weight: 900;
       letter-spacing: -0.06em;
       max-width: 560px;
-      text-shadow: 4px 4px 0 rgba(255, 111, 77, 0.24);
+      text-shadow: none;
     }
 
     .result-subtitle {
       margin-top: 12px;
-      font-size: 17px;
-      color: rgba(255,248,241,0.76);
+      font-size: 16px;
+      font-weight: 700;
+      color: rgba(255,248,241,0.82);
     }
 
     .result-verdict {
-      margin-top: 18px;
-      font-size: 16px;
-      line-height: 1.88;
-      color: rgba(255,249,243,0.9);
+      margin-top: 14px;
+      max-width: 520px;
+      font-size: 15px;
+      line-height: 1.7;
+      color: rgba(255,249,243,0.92);
     }
 
     .tag-row {
-      margin-top: 18px;
+      margin-top: 12px;
+    }
+
+    .result-hero .tag-row {
+      gap: 8px;
     }
 
     .result-tag {
-      background: rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.1);
       border: 1px solid rgba(255,255,255,0.08);
       color: #fffdf8;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 700;
     }
 
     .share-card {
-      margin-top: 18px;
-      padding: 18px;
-      border-radius: 24px;
-      background: rgba(255,255,255,0.88);
-      border: 2px dashed rgba(24,32,51,0.16);
-      transform: rotate(1.8deg);
-      box-shadow: 0 14px 28px rgba(15, 24, 46, 0.14);
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(255,253,248,0.98), rgba(255,243,231,0.96));
+      border: 1px solid rgba(24,32,51,0.12);
+      transform: none;
+      box-shadow: 0 10px 20px rgba(15, 24, 46, 0.08);
+    }
+
+    .share-card .rail-kicker {
+      color: rgba(24,32,51,0.46);
+    }
+
+    .share-card .meta-copy {
+      margin-top: 6px;
+      color: #3b4257;
+      font-size: 13px;
+      line-height: 1.5;
+      font-weight: 700;
     }
 
     .result-stamp-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      margin-top: 18px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 0;
     }
 
     .result-stamp {
-      min-width: 148px;
-      padding: 14px 16px;
-      border-radius: 24px;
+      min-width: 0;
+      padding: 9px 10px 8px;
+      border-radius: 14px;
       border: 1px solid rgba(24,32,51,0.1);
-      box-shadow: 0 14px 26px rgba(29,43,83,0.1);
+      box-shadow: 0 10px 20px rgba(29,43,83,0.08);
       color: var(--ink);
     }
 
-    .result-stamp:nth-child(1) { background: rgba(255, 228, 122, 0.86); transform: rotate(-2deg); }
-    .result-stamp:nth-child(2) { background: rgba(158, 240, 217, 0.9); transform: rotate(1.6deg); }
-    .result-stamp:nth-child(3) { background: rgba(255, 213, 188, 0.92); transform: rotate(-1deg); }
+    .result-stamp span {
+      margin-top: 4px;
+      font-size: 12px;
+      line-height: 1.28;
+    }
+
+    .result-stamp:nth-child(1) { background: rgba(255, 228, 122, 0.86); transform: none; }
+    .result-stamp:nth-child(2) { background: rgba(158, 240, 217, 0.9); transform: none; }
+    .result-stamp:nth-child(3) { background: rgba(255, 213, 188, 0.92); transform: none; }
 
     .hero-visual {
-      margin-top: 20px;
-      padding: 18px;
-      border-radius: 28px;
-      background: rgba(255,255,255,0.12);
-      border: 1px solid rgba(255,255,255,0.1);
+      margin-top: 16px;
+      padding: 14px;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.08);
       backdrop-filter: blur(10px);
     }
 
@@ -939,9 +1087,9 @@
     }
 
     .visual-title {
-      margin-top: 8px;
-      font-size: 28px;
-      line-height: 1.1;
+      margin-top: 6px;
+      font-size: 24px;
+      line-height: 1.04;
       font-weight: 900;
       color: #fffdf8;
     }
@@ -958,10 +1106,10 @@
 
     .visual-image {
       width: 100%;
-      margin-top: 16px;
-      aspect-ratio: 1 / 1;
+      margin-top: 12px;
+      aspect-ratio: 1.02 / 1;
       object-fit: cover;
-      border-radius: 24px;
+      border-radius: 18px;
       background: rgba(255,255,255,0.08);
       border: 1px solid rgba(255,255,255,0.12);
     }
@@ -978,50 +1126,73 @@
 
     .score-card {
       flex: 1;
-      min-width: 180px;
+      min-width: 0;
       background: linear-gradient(180deg, rgba(255,253,248,0.98), rgba(255,243,229,0.96));
       border: 1px solid rgba(24,32,51,0.1);
-      box-shadow: 0 18px 32px rgba(29,43,83,0.1);
+      box-shadow: 0 12px 24px rgba(29,43,83,0.08);
+      border-radius: 18px;
     }
 
-    .score-card:nth-child(1) { transform: rotate(-0.6deg); }
-    .score-card:nth-child(2) { transform: rotate(0.8deg); }
-    .score-card:nth-child(3) { transform: rotate(-1deg); }
+    .score-card:nth-child(1),
+    .score-card:nth-child(2),
+    .score-card:nth-child(3) { transform: none; }
 
     .score-name {
-      margin-top: 10px;
-      font-size: 30px;
+      margin-top: 8px;
+      font-size: 18px;
+      line-height: 1.06;
       font-weight: 900;
       color: var(--ink);
     }
 
     .score-value {
-      margin-top: 6px;
+      margin-top: 4px;
       color: var(--muted);
-      font-size: 14px;
+      font-size: 11px;
     }
 
     .top-item {
-      flex: 1;
-      min-width: 210px;
-      padding: 18px;
-      border-radius: 26px;
+      min-width: 0;
+      padding: 12px 14px;
+      border-radius: 16px;
       background: linear-gradient(180deg, #fffdf8, #fff4e7);
       border: 1px solid rgba(24,32,51,0.08);
-      box-shadow: 0 14px 26px rgba(29,43,83,0.08);
+      box-shadow: 0 12px 22px rgba(29,43,83,0.08);
+      display: grid;
+      grid-template-columns: 64px minmax(0, 1fr);
+      grid-template-areas:
+        "rank name"
+        "rank copy";
+      column-gap: 10px;
+      row-gap: 2px;
+      align-items: start;
     }
 
-    .top-item:nth-child(1) { transform: rotate(-1deg); }
-    .top-item:nth-child(2) { transform: rotate(0.8deg); }
-    .top-item:nth-child(3) { transform: rotate(-0.4deg); }
+    .top-item:nth-child(1),
+    .top-item:nth-child(2),
+    .top-item:nth-child(3) { transform: none; }
 
     .top-name {
-      margin-top: 10px;
-      font-size: 26px;
+      grid-area: name;
+      margin-top: 0;
+      font-size: 17px;
+      line-height: 1.08;
       font-weight: 900;
     }
 
-    .top-copy { margin-top: 8px; }
+    .top-rank {
+      grid-area: rank;
+      align-self: start;
+      color: rgba(24,32,51,0.42);
+    }
+
+    .top-copy {
+      grid-area: copy;
+      margin-top: 0;
+      font-size: 11px;
+      line-height: 1.36;
+      color: #46506c;
+    }
 
     .list-stack {
       display: grid;
@@ -1032,28 +1203,287 @@
     .list-card {
       background: linear-gradient(180deg, rgba(255,253,248,0.98), rgba(255,243,231,0.96));
       border: 1px solid rgba(24,32,51,0.1);
-      box-shadow: 0 18px 32px rgba(29,43,83,0.08);
+      box-shadow: 0 12px 24px rgba(29,43,83,0.08);
     }
 
-    .list-card:nth-child(odd) { transform: rotate(-0.3deg); }
-    .list-card:nth-child(even) { transform: rotate(0.35deg); }
+    .list-card:nth-child(odd),
+    .list-card:nth-child(even) { transform: none; }
 
     .list-card ul {
       margin: 0;
       padding-left: 20px;
       color: #3b4257;
-      line-height: 1.9;
-      font-size: 15px;
+      line-height: 1.55;
+      font-size: 13px;
     }
 
     .list-card li + li {
-      margin-top: 8px;
+      margin-top: 6px;
     }
 
     .roast {
       margin-top: 0;
       color: #3b4257;
-      font-size: 16px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .result-grid {
+      grid-template-columns: 1fr;
+      min-height: calc(100vh - 96px);
+    }
+
+    .result-screen {
+      min-height: calc(100vh - 96px);
+      max-height: calc(100vh - 96px);
+      padding: 16px 18px;
+      background:
+        radial-gradient(circle at 88% 16%, rgba(255, 228, 122, 0.14), transparent 18%),
+        radial-gradient(circle at 12% 88%, rgba(158, 240, 217, 0.12), transparent 18%),
+        linear-gradient(160deg, #1b2950 0%, #223463 45%, #2a3d73 100%);
+      overflow: hidden;
+      color: #fffdf8;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+    }
+
+    .result-screen-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .result-screen .result-kicker {
+      color: rgba(255,248,241,0.58);
+    }
+
+    .result-page-chip {
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #fff8f0;
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .result-overview-grid {
+      display: grid;
+      grid-template-columns: minmax(340px, 0.92fr) minmax(0, 1.08fr);
+      gap: 14px;
+      min-height: 0;
+      align-items: start;
+    }
+
+    .result-side-column {
+      min-height: 0;
+      display: grid;
+      grid-template-rows: auto auto auto;
+      gap: 8px;
+      align-content: start;
+    }
+
+    .result-info-stack {
+      display: grid;
+      gap: 8px;
+    }
+
+    .result-score-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .result-score-grid .score-card {
+      padding: 12px 12px 10px;
+      min-height: 88px;
+    }
+
+    .result-top-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 6px;
+      min-height: 0;
+    }
+
+    .result-info-stack .share-card {
+      margin-top: 0;
+    }
+
+    .result-detail-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 128px;
+      gap: 16px;
+      align-items: center;
+      padding: 14px 16px;
+      border-radius: 20px;
+      background:
+        radial-gradient(circle at 88% 28%, rgba(255,255,255,0.12), transparent 22%),
+        linear-gradient(180deg, rgba(255,255,255,0.11), rgba(255,255,255,0.06));
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+
+    .detail-hero-copy {
+      min-width: 0;
+      align-self: stretch;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .detail-hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .detail-hero-side {
+      display: flex;
+      align-items: stretch;
+      justify-content: end;
+      gap: 10px;
+    }
+
+    .detail-result-title {
+      font-size: 30px;
+      line-height: 0.92;
+      font-weight: 900;
+      letter-spacing: -0.05em;
+      color: #fffdf8;
+    }
+
+    .detail-result-subtitle {
+      font-size: 13px;
+      font-weight: 700;
+      color: rgba(255,248,241,0.78);
+    }
+
+    .detail-result-badge {
+      flex-shrink: 0;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #fffdf8;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+    }
+
+    .detail-visual-card {
+      width: 128px;
+      height: 128px;
+      padding: 6px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.11);
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 10px 22px rgba(15, 24, 46, 0.14);
+    }
+
+    .detail-visual-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 16px;
+      display: block;
+      background: rgba(255,255,255,0.08);
+    }
+
+    .result-detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 10px;
+      min-height: 0;
+      align-content: stretch;
+    }
+
+    .detail-card {
+      padding: 14px 16px 12px;
+      border-radius: 20px;
+      min-height: 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .detail-card::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--yellow), color-mix(in srgb, var(--mint) 64%, white));
+      opacity: 0.92;
+    }
+
+    .detail-card:nth-child(2)::before {
+      background: linear-gradient(90deg, #ffb883, #ffd9ba);
+    }
+
+    .detail-card:nth-child(3)::before {
+      background: linear-gradient(90deg, var(--mint), #d8fff2);
+    }
+
+    .detail-card:nth-child(4)::before {
+      background: linear-gradient(90deg, #8faeff, #c7d5ff);
+    }
+
+    .detail-card .list-title {
+      font-size: 18px;
+      line-height: 1.02;
+      margin-bottom: 8px;
+    }
+
+    .detail-card.list-card ul {
+      font-size: 12px;
+      line-height: 1.48;
+      padding-left: 18px;
+    }
+
+    .detail-card.list-card li + li {
+      margin-top: 5px;
+    }
+
+    .detail-card .roast {
+      font-size: 13px;
+      line-height: 1.6;
+      color: #32405f;
+    }
+
+    .result-screen-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      margin-top: 10px;
+    }
+
+    .result-page-dots {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .result-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .result-dot.active {
+      width: 28px;
+      background: var(--yellow);
+      border-color: rgba(255,255,255,0.18);
     }
 
     @media (max-width: 980px) {
@@ -1075,6 +1505,11 @@
 
       .rail {
         position: static;
+      }
+
+      .question-top-stack,
+      .option-list {
+        grid-template-columns: 1fr;
       }
     }
 
@@ -1164,28 +1599,28 @@
     </section>
 
     <section id="quiz" class="quiz-grid hidden">
-      <aside class="rail">
-        <div class="panel rail-card">
-          <div class="rail-kicker">current mode</div>
-          <div id="phaseLabel" class="progress-big">主测</div>
-          <div id="progressText" class="meta-copy">第 1 / 45 题</div>
-          <div class="progress-track">
-            <div id="progressFill" class="progress-fill"></div>
-          </div>
-          <div class="meter-note">
-            <strong>status note</strong>
-            <span id="progressCopy"></span>
-          </div>
-        </div>
-
-        <div class="panel rail-card">
-          <div class="rail-kicker">friendly reminder</div>
-          <div class="section-title" style="font-size:24px;">别选体面答案</div>
-          <div class="meta-copy">选你真正会在工位上做出来的那种反应。越诚实，结果越像你本人，越适合发给同事互相对号入座。</div>
-        </div>
-      </aside>
-
       <div class="panel question-panel">
+        <div class="question-top-stack">
+          <div class="question-progress-card">
+            <div class="question-progress-head">
+              <div>
+                <div class="rail-kicker">current mode</div>
+                <div id="phaseLabel" class="progress-big">主测</div>
+              </div>
+              <div id="progressText" class="meta-copy">第 1 / 45 题</div>
+            </div>
+            <div class="progress-track">
+              <div id="progressFill" class="progress-fill"></div>
+            </div>
+            <div id="progressCopy" class="question-progress-copy"></div>
+          </div>
+
+          <div class="question-reminder">
+            <div class="question-reminder-title">friendly reminder</div>
+            <div class="question-reminder-copy">别选体面答案。选你真正会在工位上做出来的那种反应。越诚实，结果越像你本人，越适合发给同事互相对号入座。</div>
+          </div>
+        </div>
+
         <div class="question-head">
           <div class="question-kicker">pick the one that feels painfully true</div>
           <div id="phaseChip" class="phase-chip">single choice</div>
@@ -1205,58 +1640,106 @@
     </section>
 
     <section id="result" class="result-grid hidden">
-      <aside class="rail">
-        <div class="panel result-hero">
-          <div class="result-kicker">your workplace code name</div>
-          <div id="resultTitle" class="result-title"></div>
-          <div id="resultSubtitle" class="result-subtitle"></div>
-          <div id="resultVerdict" class="result-verdict"></div>
-          <div id="resultTags" class="tag-row"></div>
-          <div id="resultVisualCard" class="hero-visual hidden">
-            <div class="visual-head">
-              <div>
-                <div class="visual-kicker">persona visual</div>
-                <div id="visualTitle" class="visual-title"></div>
-              </div>
-              <div id="visualBadge" class="visual-badge"></div>
-            </div>
-            <img id="visualImage" class="visual-image" alt="角色形象">
-          </div>
-          <div id="resultStampRow" class="result-stamp-row"></div>
+      <div id="resultOverviewPage" class="panel result-screen">
+        <div class="result-screen-head">
+          <div class="result-kicker">结果页 01</div>
+          <div class="result-page-chip">角色总览</div>
+        </div>
 
-          <div class="share-card">
-            <div class="rail-kicker">share this line</div>
-            <div id="shareCopy" class="meta-copy"></div>
+        <div class="result-overview-grid">
+          <div class="result-hero">
+            <div class="result-kicker">你的工位代号</div>
+            <div id="resultTitle" class="result-title"></div>
+            <div id="resultSubtitle" class="result-subtitle"></div>
+            <div id="resultVerdict" class="result-verdict"></div>
+            <div id="resultTags" class="tag-row"></div>
+            <div id="resultVisualCard" class="hero-visual hidden">
+              <div class="visual-head">
+                <div>
+                  <div class="visual-kicker">角色形象</div>
+                  <div id="visualTitle" class="visual-title"></div>
+                </div>
+                <div id="visualBadge" class="visual-badge"></div>
+              </div>
+              <img id="visualImage" class="visual-image" alt="角色形象">
+            </div>
+          </div>
+
+          <div class="result-side-column">
+            <div id="scoreRow" class="score-row result-score-grid"></div>
+            <div id="topList" class="top-row result-top-grid"></div>
+            <div class="result-info-stack">
+              <div id="resultStampRow" class="result-stamp-row"></div>
+              <div class="share-card">
+                <div class="rail-kicker">分享文案</div>
+                <div id="shareCopy" class="meta-copy"></div>
+              </div>
+            </div>
           </div>
         </div>
-      </aside>
 
-      <div class="result-main">
-        <div id="scoreRow" class="score-row"></div>
-        <div id="topList" class="top-row"></div>
+        <div class="result-screen-actions">
+          <div class="result-page-dots">
+            <span class="result-dot active"></span>
+            <span class="result-dot"></span>
+          </div>
+          <div class="action-row">
+            <button id="nextResultPageBtn" class="button primary">看详细拆解</button>
+          </div>
+        </div>
+      </div>
 
-        <div class="list-stack">
-          <div class="panel list-card">
+      <div id="resultDetailPage" class="panel result-screen hidden">
+        <div class="result-screen-head">
+          <div class="result-kicker">结果页 02</div>
+          <div class="result-page-chip">人格拆解</div>
+        </div>
+
+        <div class="result-detail-hero">
+          <div class="detail-hero-copy">
+            <div class="visual-kicker">角色拆解对象</div>
+            <div id="detailResultTitle" class="detail-result-title"></div>
+            <div class="detail-hero-meta">
+              <div id="detailResultSubtitle" class="detail-result-subtitle"></div>
+              <div id="detailResultBadge" class="detail-result-badge"></div>
+            </div>
+          </div>
+          <div class="detail-hero-side">
+            <div id="detailVisualCard" class="detail-visual-card hidden">
+              <img id="detailVisualImage" class="detail-visual-image" alt="角色形象缩略图">
+            </div>
+          </div>
+        </div>
+
+        <div class="result-detail-grid">
+          <div class="panel list-card detail-card">
             <div class="list-title">高光技能</div>
             <ul id="strengthList"></ul>
           </div>
-          <div class="panel list-card">
+          <div class="panel list-card detail-card">
             <div class="list-title">隐藏雷区</div>
             <ul id="riskList"></ul>
           </div>
-          <div class="panel list-card">
+          <div class="panel list-card detail-card">
             <div class="list-title">适合场景</div>
             <ul id="sceneList"></ul>
           </div>
-          <div class="panel list-card">
+          <div class="panel list-card detail-card">
             <div class="list-title">黑话点评</div>
             <div id="roastText" class="roast"></div>
           </div>
         </div>
 
-        <div class="action-row" style="margin-top:18px;">
-          <button id="restartBtn" class="button secondary">重新测一次</button>
-          <button id="copyBtn" class="button primary">复制结果文案</button>
+        <div class="result-screen-actions">
+          <div class="result-page-dots">
+            <span class="result-dot"></span>
+            <span class="result-dot active"></span>
+          </div>
+          <div class="action-row">
+            <button id="prevResultPageBtn" class="button secondary">返回总览</button>
+            <button id="restartBtn" class="button secondary">重新测一次</button>
+            <button id="copyBtn" class="button primary">复制结果文案</button>
+          </div>
         </div>
       </div>
     </section>
@@ -1414,16 +1897,24 @@
       styleScore: emptyScore(STYLE_TYPES),
       lastText: '',
       avatarMap: {},
-      currentResult: null
+      currentResult: null,
+      resultPage: 1
     };
 
     const landingEl = document.getElementById('landing');
     const quizEl = document.getElementById('quiz');
     const resultEl = document.getElementById('result');
+    const resultOverviewPageEl = document.getElementById('resultOverviewPage');
+    const resultDetailPageEl = document.getElementById('resultDetailPage');
     const resultVisualCardEl = document.getElementById('resultVisualCard');
     const visualTitleEl = document.getElementById('visualTitle');
     const visualBadgeEl = document.getElementById('visualBadge');
     const visualImageEl = document.getElementById('visualImage');
+    const detailVisualCardEl = document.getElementById('detailVisualCard');
+    const detailVisualImageEl = document.getElementById('detailVisualImage');
+    const detailResultTitleEl = document.getElementById('detailResultTitle');
+    const detailResultSubtitleEl = document.getElementById('detailResultSubtitle');
+    const detailResultBadgeEl = document.getElementById('detailResultBadge');
     const phaseLabelEl = document.getElementById('phaseLabel');
     const progressTextEl = document.getElementById('progressText');
     const progressCopyEl = document.getElementById('progressCopy');
@@ -1435,10 +1926,14 @@
     const questionRealityEl = document.getElementById('questionReality');
     const questionTipEl = document.getElementById('questionTip');
     const optionListEl = document.getElementById('optionList');
+    const nextResultPageBtnEl = document.getElementById('nextResultPageBtn');
+    const prevResultPageBtnEl = document.getElementById('prevResultPageBtn');
 
     document.getElementById('startBtn').addEventListener('click', startQuiz);
     document.getElementById('restartBtn').addEventListener('click', startQuiz);
     document.getElementById('copyBtn').addEventListener('click', copyResult);
+    nextResultPageBtnEl.addEventListener('click', () => setResultPage(2));
+    prevResultPageBtnEl.addEventListener('click', () => setResultPage(1));
     preloadAvatarManifest();
 
     function q(id, title, options) { return { id, title, options }; }
@@ -1469,6 +1964,8 @@
         ...shuffle(MAIN_QUESTIONS.map(item => ({ ...item, phase: 'main', options: shuffle(item.options) }))),
         ...shuffle(STYLE_QUESTIONS.map(item => ({ ...item, phase: 'style', options: shuffle(item.options) })))
       ];
+      document.body.classList.remove('mode-result');
+      document.body.classList.add('mode-quiz');
       landingEl.classList.add('hidden');
       resultEl.classList.add('hidden');
       quizEl.classList.remove('hidden');
@@ -1549,13 +2046,19 @@
       const tags = [...detail.strengths.slice(0, 2), ...styleMeta.tags];
       const shareLine = `我是 ${roleName}，表面 ${primary.label}，骨子里还藏着 ${secondary.label}。`;
       state.currentResult = { roleId, roleName, subtitle: `${primary.label} x ${style.label}` };
+      state.resultPage = 1;
 
+      document.body.classList.remove('mode-quiz');
+      document.body.classList.add('mode-result');
       quizEl.classList.add('hidden');
       resultEl.classList.remove('hidden');
 
       document.getElementById('resultTitle').textContent = roleName;
       document.getElementById('resultSubtitle').textContent = `${primary.label} x ${style.label}`;
       document.getElementById('resultVerdict').textContent = verdict;
+      detailResultTitleEl.textContent = roleName;
+      detailResultSubtitleEl.textContent = `${primary.label} x ${style.label}`;
+      detailResultBadgeEl.textContent = `#${roleId}`;
       document.getElementById('resultTags').innerHTML = tags.map(tag => `<span class="result-tag">${tag}</span>`).join('');
       document.getElementById('resultStampRow').innerHTML = [
         resultStamp('工位代号', roleName),
@@ -1596,8 +2099,16 @@
         `如果把你放在需要 ${primary.label} 又允许 ${style.label} 发挥的岗位里，存在感会直接翻倍。`
       ]);
 
-      document.getElementById('roastText').textContent = `黑话点评：${detail.roast}`;
+      document.getElementById('roastText').textContent = detail.roast;
       state.lastText = `我的职场人格是：${roleName}\n${primary.label} x ${style.label}\n${verdict}\n副人格：${secondary.label}\n${shareLine}\n黑话点评：${detail.roast}`;
+      setResultPage(1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function setResultPage(page) {
+      state.resultPage = page;
+      resultOverviewPageEl.classList.toggle('hidden', page !== 1);
+      resultDetailPageEl.classList.toggle('hidden', page !== 2);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
@@ -1623,6 +2134,7 @@
       const avatar = state.avatarMap[roleId];
       if (!avatar) {
         resultVisualCardEl.classList.add('hidden');
+        detailVisualCardEl.classList.add('hidden');
         return;
       }
 
@@ -1630,7 +2142,10 @@
       visualBadgeEl.textContent = roleId;
       visualImageEl.src = `/miniprogram/${avatar.image}`;
       visualImageEl.alt = `${roleName} 角色形象`;
+      detailVisualImageEl.src = `/miniprogram/${avatar.image}`;
+      detailVisualImageEl.alt = `${roleName} 角色形象缩略图`;
       resultVisualCardEl.classList.remove('hidden');
+      detailVisualCardEl.classList.remove('hidden');
     }
 
     function scoreCard(label, name, value) {
