@@ -679,8 +679,8 @@
         linear-gradient(160deg, #1b2950 0%, #223463 45%, #2a3d73 100%);
       color: #fffdf8;
       transform: none;
-      display: grid;
-      grid-template-rows: auto auto 1fr;
+      display: flex;
+      flex-direction: column;
       overflow: hidden;
     }
 
@@ -708,6 +708,14 @@
       justify-content: space-between;
       gap: 10px;
       align-items: start;
+    }
+
+    .question-flow {
+      flex: 1;
+      display: grid;
+      align-content: start;
+      gap: 4px;
+      min-height: 0;
     }
 
     .question-top-stack {
@@ -790,9 +798,10 @@
     }
 
     .question-title {
-      margin-top: 4px;
-      font-size: clamp(22px, 2.4vw, 32px);
-      line-height: 0.98;
+      margin-top: 0;
+      margin-bottom: 0;
+      font-size: clamp(20px, 2.2vw, 30px);
+      line-height: 0.94;
       letter-spacing: -0.06em;
       font-weight: 900;
       max-width: 920px;
@@ -802,9 +811,10 @@
 
     .question-subtitle {
       max-width: 860px;
-      margin-top: 4px;
-      font-size: 12px;
-      line-height: 1.34;
+      margin-top: 0;
+      margin-bottom: 0;
+      font-size: 11px;
+      line-height: 1.22;
       color: rgba(255, 246, 238, 0.74);
     }
 
@@ -812,7 +822,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      margin-top: 10px;
+      margin-top: 2px;
       align-items: stretch;
     }
 
@@ -864,7 +874,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
-      margin-top: 12px;
+      margin-top: 6px;
       align-content: start;
       grid-auto-rows: 1fr;
     }
@@ -1493,6 +1503,11 @@
         grid-template-columns: 1fr;
       }
 
+      .quiz-grid,
+      .result-grid {
+        min-height: auto;
+      }
+
       .hero-cards {
         position: static;
         width: auto;
@@ -1510,6 +1525,13 @@
       .question-top-stack,
       .option-list {
         grid-template-columns: 1fr;
+      }
+
+      .question-panel,
+      .result-screen {
+        min-height: auto;
+        max-height: none;
+        overflow: visible;
       }
     }
 
@@ -1547,8 +1569,30 @@
         grid-template-columns: 1fr;
       }
 
+      .question-panel {
+        padding: 16px 16px 18px;
+      }
+
+      .question-top-stack {
+        gap: 8px;
+        margin-bottom: 8px;
+      }
+
+      .question-progress-card,
+      .question-reminder {
+        padding: 12px;
+      }
+
       .question-meta-row {
         flex-direction: column;
+      }
+
+      .option-list {
+        gap: 8px;
+      }
+
+      .option-shell {
+        padding: 11px 12px;
       }
     }
   </style>
@@ -1621,21 +1665,23 @@
           </div>
         </div>
 
-        <div class="question-head">
-          <div class="question-kicker">pick the one that feels painfully true</div>
-          <div id="phaseChip" class="phase-chip">single choice</div>
-        </div>
-        <h2 id="questionTitle" class="question-title"></h2>
-        <div id="questionSubtitle" class="question-subtitle"></div>
-        <div class="question-meta-row">
-          <div id="questionMood" class="question-chip"></div>
-          <div id="questionReality" class="question-chip"></div>
-          <div class="question-note">
-            <strong>truth detector</strong>
-            <span id="questionTip"></span>
+        <div class="question-flow">
+          <div class="question-head">
+            <div class="question-kicker">pick the one that feels painfully true</div>
+            <div id="phaseChip" class="phase-chip">single choice</div>
           </div>
+          <h2 id="questionTitle" class="question-title"></h2>
+          <div id="questionSubtitle" class="question-subtitle"></div>
+          <div class="question-meta-row">
+            <div id="questionMood" class="question-chip"></div>
+            <div id="questionReality" class="question-chip"></div>
+            <div class="question-note">
+              <strong>truth detector</strong>
+              <span id="questionTip"></span>
+            </div>
+          </div>
+          <div id="optionList" class="option-list"></div>
         </div>
-        <div id="optionList" class="option-list"></div>
       </div>
     </section>
 
@@ -1746,15 +1792,17 @@
   </main>
 
   <script>
-    const AVATAR_MANIFEST_URL = '/miniprogram/data/generated/avatar-manifest-108.json';
-    const PROGRESS_COPY = [
-      '你已经击败 37% 的嘴硬同事，继续暴露本性。',
-      '别慌，测出来不是有病，只是有工龄。',
-      '目前看你还算克制，再答几题就原形毕露了。',
-      '你的工位灵魂正在加载，请继续提交证词。',
-      '再坚持一下，职场宇宙快把你归类了。'
-    ];
+    const IS_FILE_PREVIEW = window.location.protocol === 'file:';
+    const AVATAR_MANIFEST_URL = IS_FILE_PREVIEW
+      ? new URL('./miniprogram/data/generated/avatar-manifest-108.json', window.location.href).href
+      : '/miniprogram/data/generated/avatar-manifest-108.json';
 
+    function resolveAvatarAssetPath(imagePath) {
+      if (IS_FILE_PREVIEW) {
+        return new URL(`./miniprogram/${imagePath}`, window.location.href).href;
+      }
+      return `/miniprogram/${imagePath}`;
+    }
     const QUESTION_TIPS = [
       '选那个你会在真实群聊里发出来的，不是年终述职里会说出来的。',
       '如果四个选项都像你，挑那个最容易让同事翻你白眼的。',
@@ -1955,6 +2003,28 @@
       return cloned;
     }
 
+    function getProgressCopy(index, total, phase) {
+      const current = index + 1;
+      const percent = Math.round((current / total) * 100);
+
+      if (phase === 'main') {
+        if (current <= 5) return `刚开场，先别装成熟。现在只答到第 ${current} 题，工位本能还藏不住。`;
+        if (current <= 10) return `进度 ${percent}% ，你的做事驱动力已经开始露底，同事雷达正在启动。`;
+        if (current <= 15) return `答到第 ${current} 题了，体面人格正在下线，真实工位人格开始接管。`;
+        if (current <= 20) return `主测过半前夜，你最常用的那套做事电路已经越来越明显了。`;
+        if (current <= 25) return `主测进度 ${percent}% ，现在的答案已经不太像演的了，像你本人。`;
+        if (current <= 30) return `快把主测做穿了。你在推事、拆事、接事上的偏好已经很难再嘴硬。`;
+        if (current <= 36) return `主测收尾中，再答几题，你在团队里到底靠什么出手就要定型了。`;
+      }
+
+      const styleStep = current - 36;
+      if (styleStep <= 2) return `进入风格加试。主人格差不多现形了，现在开始抓你是怎么发力的。`;
+      if (styleStep <= 4) return `风格加试进行中，你是猛冲、冷切、还是慢慢带起全场，马上见分晓。`;
+      if (styleStep <= 6) return `答到加试第 ${styleStep} 题，气场和手感已经比嘴上说的更诚实了。`;
+      if (styleStep <= 8) return `快收卷了，最后这几题决定你是怎么把同一种人格打出不同质感的。`;
+      return `最后一题，别收着。你的工位代号和出招风格马上就要正式盖章。`;
+    }
+
     function startQuiz() {
       state.currentResult = null;
       state.index = 0;
@@ -1980,7 +2050,7 @@
       phaseLabelEl.textContent = phaseMeta.label;
       phaseChipEl.textContent = phaseMeta.chip;
       progressTextEl.textContent = `第 ${state.index + 1} / ${state.queue.length} 题`;
-      progressCopyEl.textContent = PROGRESS_COPY[state.index % PROGRESS_COPY.length];
+      progressCopyEl.textContent = getProgressCopy(state.index, state.queue.length, current.phase);
       progressFillEl.style.width = `${percent}%`;
       questionTitleEl.textContent = current.title;
       questionSubtitleEl.textContent = phaseMeta.subtitle;
@@ -2140,9 +2210,9 @@
 
       visualTitleEl.textContent = `#${avatar.index} ${roleName}`;
       visualBadgeEl.textContent = roleId;
-      visualImageEl.src = `/miniprogram/${avatar.image}`;
+      visualImageEl.src = resolveAvatarAssetPath(avatar.image);
       visualImageEl.alt = `${roleName} 角色形象`;
-      detailVisualImageEl.src = `/miniprogram/${avatar.image}`;
+      detailVisualImageEl.src = resolveAvatarAssetPath(avatar.image);
       detailVisualImageEl.alt = `${roleName} 角色形象缩略图`;
       resultVisualCardEl.classList.remove('hidden');
       detailVisualCardEl.classList.remove('hidden');
